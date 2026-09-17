@@ -1,0 +1,2203 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MD. Ibrahim Khalil — Industrial Automation & BMS Engineer</title>
+<meta name="description" content="Portfolio of MD. Ibrahim Khalil, Industrial Automation Specialist, Certified BMS Programmer and SCADA Engineer based in Dhaka, Bangladesh.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   0. TOKENS
+   ============================================================ */
+:root{
+  --font-sans:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --font-mono:'JetBrains Mono',ui-monospace,'SFMono-Regular',Menlo,monospace;
+
+  /* light mode */
+  --bg:#e8ecf2;
+  --bg-elevated:#eef1f6;
+  --surface:#e8ecf2;
+  --text-primary:#1f2937;
+  --text-secondary:#4b5566;
+  --text-muted:#8590a3;
+  --accent:#0ea472;
+  --accent-strong:#0c8a5f;
+  --accent-soft:rgba(16,185,129,.14);
+  --rail:#c7ccd6;
+  --shadow-light:#ffffff;
+  --shadow-dark:#b9c0cc;
+  --danger:#d1495b;
+  --amber:#c9822a;
+  --blue:#2f6fb0;
+
+  --radius-sm:10px;
+  --radius-md:16px;
+  --radius-lg:24px;
+  --gap:clamp(1rem,2vw,1.75rem);
+  --maxw:1280px;
+
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+
+[data-theme="dark"]{
+  --bg:#0f172a;
+  --bg-elevated:#121e35;
+  --surface:#111f38;
+  --text-primary:#e7edf7;
+  --text-secondary:#a9b6cc;
+  --text-muted:#6b7d9c;
+  --accent:#34d399;
+  --accent-strong:#5eead4;
+  --accent-soft:rgba(52,211,153,.16);
+  --rail:#233252;
+  --shadow-light:#182948;
+  --shadow-dark:#070d1a;
+  --danger:#f2748a;
+  --amber:#e2a94e;
+  --blue:#7db4e8;
+}
+
+*,*::before,*::after{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto;}
+  *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;}
+}
+body{
+  margin:0;
+  font-family:var(--font-sans);
+  background:var(--bg);
+  color:var(--text-primary);
+  -webkit-font-smoothing:antialiased;
+  transition:background .35s var(--ease),color .35s var(--ease);
+  line-height:1.55;
+}
+h1,h2,h3,h4{margin:0;font-weight:800;letter-spacing:-.02em;}
+p{margin:0;}
+a{color:inherit;text-decoration:none;}
+ul{margin:0;padding:0;list-style:none;}
+button{font-family:inherit;cursor:pointer;}
+img{max-width:100%;display:block;}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px;}
+
+/* neumorphic helpers */
+.neu-out{
+  background:var(--bg-elevated);
+  box-shadow: 8px 8px 18px var(--shadow-dark), -8px -8px 18px var(--shadow-light);
+}
+.neu-in{
+  background:var(--bg-elevated);
+  box-shadow: inset 5px 5px 12px var(--shadow-dark), inset -5px -5px 12px var(--shadow-light);
+}
+.neu-flat{
+  background:var(--bg-elevated);
+  box-shadow: 4px 4px 10px var(--shadow-dark), -4px -4px 10px var(--shadow-light);
+}
+
+/* ============================================================
+   1. LAYOUT SHELL
+   ============================================================ */
+.shell{
+  max-width:var(--maxw);
+  margin:0 auto;
+  padding:1.5rem clamp(1rem,3vw,2rem) 4rem clamp(2.5rem,5vw,3.5rem);
+}
+
+/* ---------------------------------------------------------
+   Sidebar: auto-hidden off-canvas drawer on every breakpoint,
+   opened with the edge tab / closed by re-pressing it,
+   clicking outside, choosing a nav link, or Escape.
+   --------------------------------------------------------- */
+.sidebar-overlay{
+  position:fixed;inset:0;z-index:55;
+  background:rgba(8,12,20,.5);
+  opacity:0;pointer-events:none;
+  transition:opacity .3s var(--ease);
+}
+.sidebar-overlay.open{opacity:1;pointer-events:auto;}
+
+.sidebar-tab{
+  position:fixed;left:0;top:50%;
+  transform:translateY(-50%);
+  width:38px;height:78px;
+  border:none;border-radius:0 18px 18px 0;
+  display:flex;align-items:center;justify-content:center;
+  z-index:70;color:var(--text-secondary);
+  transition:color .2s,left .35s var(--ease);
+}
+.sidebar-tab:hover{color:var(--accent-strong);}
+.sidebar-tab svg{width:15px;height:15px;transition:transform .35s var(--ease);}
+.sidebar-tab.open svg{transform:rotate(180deg);}
+.sidebar-tab.open{color:var(--accent-strong);}
+
+/* ============================================================
+   2. SIDEBAR
+   ============================================================ */
+.sidebar{
+  position:fixed;top:0;left:0;height:100vh;
+  width:min(320px,88vw);
+  border-radius:0 var(--radius-lg) var(--radius-lg) 0;
+  padding:1.75rem 1.5rem;
+  display:flex;flex-direction:column;gap:1.4rem;
+  transform:translateX(-100%);
+  transition:transform .35s var(--ease);
+  z-index:60;overflow-y:auto;
+}
+.sidebar.open{transform:translateX(0);}
+
+.profile-photo-frame{
+  width:112px;height:112px;border-radius:28px;
+  margin:0 auto;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+}
+.profile-photo-frame .initials{
+  font-size:2.2rem;font-weight:800;color:var(--accent);
+}
+.profile-photo-img{
+  width:100%;height:100%;object-fit:cover;border-radius:28px;
+}
+.profile-photo-frame::after{
+  content:'';position:absolute;inset:0;border-radius:28px;
+  border:1px dashed var(--rail);
+}
+
+.id-block{text-align:center;}
+.id-block h1{font-size:1.15rem;line-height:1.3;}
+.id-block .role{
+  margin-top:.4rem;font-size:.82rem;color:var(--text-secondary);font-weight:600;
+}
+.status-pill{
+  margin:.85rem auto 0;
+  display:inline-flex;align-items:center;gap:.4rem;
+  padding:.35rem .7rem;border-radius:999px;
+  font-size:.72rem;font-weight:600;color:var(--accent-strong);
+  background:var(--accent-soft);
+}
+.status-pill i{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px var(--accent-soft);}
+
+.contact-list{display:flex;flex-direction:column;gap:.55rem;font-size:.83rem;}
+.contact-list li{
+  display:flex;align-items:center;gap:.6rem;
+  padding:.55rem .7rem;border-radius:var(--radius-sm);
+  color:var(--text-secondary);
+}
+.contact-list svg{width:16px;height:16px;flex:none;color:var(--accent);}
+.contact-list a:hover{color:var(--accent-strong);}
+
+nav.sidenav ul{display:flex;flex-direction:column;gap:.3rem;}
+nav.sidenav a{
+  display:flex;align-items:center;gap:.65rem;
+  padding:.6rem .75rem;border-radius:var(--radius-sm);
+  font-size:.85rem;font-weight:600;color:var(--text-secondary);
+  transition:color .2s,background .2s;
+}
+nav.sidenav a:hover{color:var(--text-primary);}
+nav.sidenav a.active{color:var(--accent-strong);background:var(--accent-soft);}
+nav.sidenav svg{width:16px;height:16px;color:currentColor;opacity:.85;}
+
+.side-controls{display:flex;gap:.6rem;}
+.ctrl-btn{
+  flex:1;height:40px;border-radius:var(--radius-sm);border:none;
+  display:flex;align-items:center;justify-content:center;gap:.4rem;
+  font-size:.78rem;font-weight:700;color:var(--text-secondary);
+}
+.ctrl-btn svg{width:15px;height:15px;}
+.ctrl-btn.lang-active{color:var(--accent-strong);}
+
+/* ============================================================
+   3. MAIN CONTENT
+   ============================================================ */
+main{display:flex;flex-direction:column;gap:clamp(2.5rem,4vw,3.5rem);min-width:0;}
+section{scroll-margin-top:1.5rem;}
+.section-head{margin-bottom:1.4rem;}
+.section-head .kicker{
+  font-size:.78rem;font-weight:700;color:var(--accent-strong);
+}
+.section-head h2{font-size:clamp(1.4rem,2.2vw,1.8rem);margin-top:.3rem;}
+.section-head p.lede{margin-top:.5rem;color:var(--text-secondary);font-size:.94rem;max-width:60ch;}
+
+/* ---- HERO ---- */
+.hero{
+  border-radius:var(--radius-lg);
+  padding:clamp(1.75rem,4vw,3rem);
+  position:relative;overflow:hidden;
+  display:grid;gap:1.75rem;
+}
+.hero-eyebrow{font-size:.8rem;font-weight:700;color:var(--accent-strong);}
+.hero h1{font-size:clamp(1.8rem,4vw,2.7rem);line-height:1.12;margin-top:.55rem;max-width:16ch;}
+.hero h1 em{font-style:normal;color:var(--accent);}
+.hero .desc{margin-top:1rem;color:var(--text-secondary);font-size:1rem;max-width:56ch;}
+.hero-actions{display:flex;flex-wrap:wrap;gap:.85rem;margin-top:1.6rem;}
+.btn{
+  display:inline-flex;align-items:center;gap:.5rem;
+  padding:.8rem 1.4rem;border-radius:var(--radius-sm);
+  font-weight:700;font-size:.88rem;border:none;
+  transition:transform .18s var(--ease);
+}
+.btn:active{transform:scale(.97);}
+.btn-primary{background:var(--accent);color:#06281c;}
+.btn-ghost{color:var(--text-primary);}
+.hero-strip{
+  display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.4rem;
+}
+.chip{
+  padding:.4rem .8rem;border-radius:999px;font-size:.74rem;font-weight:600;
+  color:var(--text-secondary);
+}
+
+/* ---- METRICS ---- */
+.metrics-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:var(--gap);
+}
+@media (max-width:760px){.metrics-grid{grid-template-columns:repeat(2,1fr);}}
+.metric-card{
+  border-radius:var(--radius-md);padding:1.4rem 1.1rem;text-align:left;
+}
+.metric-card .num{
+  font-size:clamp(1.7rem,3vw,2.2rem);font-weight:800;color:var(--accent-strong);
+  font-variant-numeric:tabular-nums;
+}
+.metric-card .num sup{font-size:1.1rem;top:-.6em;}
+.metric-card .label{margin-top:.35rem;font-size:.8rem;color:var(--text-secondary);font-weight:600;}
+
+/* ---- ABOUT / EDUCATION ---- */
+.about-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:var(--gap);}
+@media (max-width:820px){.about-grid{grid-template-columns:1fr;}}
+.about-card{border-radius:var(--radius-md);padding:1.5rem;}
+.timeline{display:flex;flex-direction:column;}
+.timeline-item{
+  position:relative;padding:0 0 1.25rem 1.4rem;border-left:2px solid var(--rail);
+}
+.timeline-item:last-child{padding-bottom:0;border-color:transparent;}
+.timeline-item::before{
+  content:'';position:absolute;left:-6px;top:2px;width:10px;height:10px;border-radius:50%;
+  background:var(--accent);box-shadow:0 0 0 4px var(--accent-soft);
+}
+.timeline-item h4{font-size:.92rem;}
+.timeline-item .meta{font-size:.78rem;color:var(--text-muted);margin-top:.15rem;font-weight:600;}
+.timeline-item .desc{font-size:.85rem;color:var(--text-secondary);margin-top:.35rem;}
+
+.cert-list{display:flex;flex-direction:column;gap:.7rem;}
+.cert-item{
+  display:flex;gap:.75rem;align-items:flex-start;
+  padding:.8rem;border-radius:var(--radius-sm);
+}
+.cert-item svg{width:20px;height:20px;color:var(--accent);flex:none;margin-top:.1rem;}
+.cert-item .t{font-size:.86rem;font-weight:700;}
+.cert-item .s{font-size:.78rem;color:var(--text-secondary);margin-top:.15rem;}
+.badge-frame{
+  width:44px;height:44px;border-radius:12px;flex:none;
+  display:flex;align-items:center;justify-content:center;
+  border:1px dashed var(--rail);
+}
+
+/* ---- COMPETENCY MATRIX ----
+   Cards use intrinsic (auto) height on purpose — never pair this card
+   with a fixed/max-height + overflow:hidden, and never absolutely-position
+   a badge inside .matrix-card li: both are what produce the "white box
+   overlapping the next line" + "clipped first bullet" bug seen on some
+   revisions of this layout. min-width:0 keeps a long unbroken token from
+   pushing the grid track wider than its column, and overflow-wrap lets
+   any string wrap safely instead of spilling past the card edge. */
+.matrix-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap);align-items:start;}
+@media (max-width:900px){.matrix-grid{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:600px){.matrix-grid{grid-template-columns:1fr;}}
+.matrix-card{
+  border-radius:var(--radius-md);padding:1.4rem;
+  min-width:0;height:auto;max-height:none;overflow:visible;
+  min-height:252px;display:flex;flex-direction:column;
+}
+.matrix-card .icon-wrap{
+  width:42px;height:42px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;margin-bottom:.9rem;
+}
+.matrix-card .icon-wrap svg{width:22px;height:22px;color:var(--accent-strong);}
+.matrix-card h3{
+  font-size:.98rem;white-space:normal;
+  overflow-wrap:break-word;word-break:break-word;
+  display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;
+}
+.matrix-card ul{margin-top:.65rem;display:flex;flex-direction:column;gap:.4rem;}
+.matrix-card li{
+  font-size:.82rem;color:var(--text-secondary);
+  padding-left:1rem;position:relative;
+  white-space:normal;overflow-wrap:break-word;word-break:break-word;
+}
+.matrix-card li::before{
+  content:'';position:absolute;left:0;top:.5em;width:5px;height:5px;border-radius:50%;background:var(--accent);
+}
+/* Any future inline badge/tag inside a card (e.g. "Redundancy", "New")
+   must use this class — inline-block + wraps + can never exceed the
+   card width, so it can't escape onto the line below like a floated
+   or absolutely-positioned span would. */
+.matrix-card .card-badge{
+  display:inline-block;max-width:100%;white-space:normal;
+  padding:.15rem .5rem;border-radius:999px;font-size:.7rem;font-weight:700;
+  background:var(--accent-soft);color:var(--accent-strong);vertical-align:middle;
+}
+
+/* ---- PROJECTS ---- */
+.filter-row{display:flex;flex-wrap:wrap;gap:.6rem;margin-bottom:1.4rem;}
+.filter-btn{
+  padding:.55rem 1.05rem;border-radius:999px;border:none;
+  font-size:.8rem;font-weight:700;color:var(--text-secondary);
+}
+.filter-btn.active{color:#06281c;background:var(--accent);box-shadow:none;}
+.projects-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--gap);}
+@media (max-width:820px){.projects-grid{grid-template-columns:1fr;}}
+.project-card{
+  border-radius:var(--radius-md);overflow:hidden;text-align:left;border:none;
+  display:flex;flex-direction:column;transition:transform .2s var(--ease);
+}
+.project-card:hover{transform:translateY(-3px);}
+.project-thumb{
+  height:150px;display:flex;align-items:center;justify-content:center;
+  border-bottom:1px solid var(--rail);position:relative;
+}
+.project-thumb .tag{
+  position:absolute;top:.7rem;left:.7rem;
+  font-size:.68rem;font-weight:700;padding:.3rem .6rem;border-radius:999px;
+  color:var(--accent-strong);background:var(--accent-soft);
+}
+.project-thumb svg{width:34px;height:34px;color:var(--rail);}
+.project-body{padding:1.1rem 1.2rem 1.3rem;}
+.project-body h3{font-size:.98rem;}
+.project-body .org{font-size:.78rem;color:var(--text-muted);font-weight:600;margin-top:.2rem;}
+.project-body .summary{font-size:.83rem;color:var(--text-secondary);margin-top:.55rem;}
+.project-body .specs{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.8rem;}
+.project-body .specs span{
+  font-size:.68rem;font-weight:600;color:var(--text-secondary);
+  padding:.25rem .55rem;border-radius:6px;background:var(--bg);
+}
+
+/* ---- MODAL ---- */
+.modal-overlay{
+  position:fixed;inset:0;z-index:100;
+  background:rgba(10,14,22,.55);
+  display:flex;align-items:flex-start;justify-content:center;
+  padding:4vh 1rem;overflow-y:auto;
+  opacity:0;pointer-events:none;transition:opacity .25s var(--ease);
+  backdrop-filter:blur(3px);
+}
+.modal-overlay.open{opacity:1;pointer-events:auto;}
+.modal-box{
+  width:min(760px,100%);border-radius:var(--radius-lg);
+  background:var(--bg-elevated);padding:0;
+  transform:translateY(14px) scale(.98);opacity:0;
+  transition:transform .3s var(--ease),opacity .3s var(--ease);
+  box-shadow:0 30px 60px rgba(0,0,0,.35);
+}
+.modal-overlay.open .modal-box{transform:translateY(0) scale(1);opacity:1;}
+.modal-head{
+  padding:1.5rem 1.7rem;border-bottom:1px solid var(--rail);
+  display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;
+}
+.modal-head h3{font-size:1.15rem;}
+.modal-head .org{font-size:.8rem;color:var(--text-muted);font-weight:600;margin-top:.3rem;}
+.modal-close{
+  width:36px;height:36px;border-radius:10px;border:none;flex:none;
+  display:flex;align-items:center;justify-content:center;color:var(--text-secondary);
+}
+.modal-close svg{width:16px;height:16px;}
+.modal-body{padding:1.5rem 1.7rem 1.9rem;display:flex;flex-direction:column;gap:1.25rem;}
+.modal-thumb{
+  height:180px;border-radius:var(--radius-sm);
+  display:flex;align-items:center;justify-content:center;
+  border:1px dashed var(--rail);
+}
+.modal-thumb svg{width:32px;height:32px;color:var(--rail);}
+.mod-block h4{
+  font-size:.72rem;letter-spacing:.02em;color:var(--accent-strong);font-weight:700;
+  margin-bottom:.4rem;
+}
+.mod-block p, .mod-block ul{font-size:.87rem;color:var(--text-secondary);}
+.mod-block ul{display:flex;flex-direction:column;gap:.3rem;}
+.mod-block li{padding-left:.9rem;position:relative;}
+.mod-block li::before{content:'';position:absolute;left:0;top:.55em;width:4px;height:4px;border-radius:50%;background:var(--accent);}
+
+/* ---- CODE LAB ---- */
+.codelab{border-radius:var(--radius-lg);overflow:hidden;}
+.codelab-tabs{
+  display:flex;flex-wrap:wrap;gap:.3rem;padding:1rem 1rem 0;
+}
+.codelab-tab{
+  padding:.6rem 1rem;border:none;border-radius:var(--radius-sm) var(--radius-sm) 0 0;
+  font-size:.78rem;font-weight:700;color:var(--text-secondary);background:transparent;
+}
+.codelab-tab.active{color:var(--accent-strong);background:var(--bg);}
+.codelab-panel{display:none;}
+.codelab-panel.active{display:block;}
+.code-window{
+  background:#0b1222;border-radius:0 var(--radius-md) var(--radius-md) var(--radius-md);
+  margin:0 1rem 1rem;overflow:hidden;
+}
+[data-theme="light"] .code-window{background:#0f1626;}
+.code-window .win-bar{
+  display:flex;align-items:center;gap:.4rem;padding:.65rem .9rem;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+.win-bar .dot{width:9px;height:9px;border-radius:50%;}
+.win-bar .filename{margin-left:.6rem;font-size:.72rem;color:#9fb0cc;font-family:var(--font-mono);}
+.code-window pre{
+  margin:0;padding:1.1rem 1.2rem;overflow-x:auto;
+  font-family:var(--font-mono);font-size:.79rem;line-height:1.65;color:#d5e0f5;
+}
+.code-window code .c1{color:#67d99f;}
+.code-window code .c2{color:#e2a94e;}
+.code-window code .c3{color:#7db4e8;}
+.code-window code .c4{color:#8590a3;}
+
+/* ---- CALCULATOR ---- */
+.calc-card{border-radius:var(--radius-lg);padding:clamp(1.4rem,3vw,2rem);}
+.pid-card{margin-top:1.5rem;}
+.pid-title{font-size:1rem;}
+.pid-sub{font-size:.85rem;color:var(--text-secondary);margin-top:.35rem;margin-bottom:1.3rem;max-width:56ch;}
+.pid-chart-wrap{border-radius:var(--radius-md);padding:1rem;}
+.pid-chart-wrap svg{width:100%;height:auto;display:block;}
+.pid-gridline{stroke:var(--rail);stroke-width:1;}
+.pid-sp-line{stroke:var(--text-muted);stroke-width:1.5;stroke-dasharray:5 5;}
+.pid-pv-line{fill:none;stroke:var(--accent);stroke-width:2.75;stroke-linecap:round;stroke-linejoin:round;}
+.pid-readouts{display:flex;justify-content:space-between;gap:.5rem;margin-top:1rem;}
+.pid-readouts > div{flex:1;text-align:center;padding:.7rem .4rem;border-radius:var(--radius-sm);background:var(--bg);}
+.pid-readout-label{display:block;font-size:.68rem;font-weight:700;color:var(--text-muted);margin-bottom:.25rem;}
+.pid-readouts strong{font-size:.95rem;font-family:var(--font-mono);color:var(--accent-strong);}
+/* ---- TANK LEVEL LOOP (flow / discharge, auto-manual station) ---- */
+.tank-card{margin-top:1.5rem;}
+.tank-grid{display:grid;grid-template-columns:.88fr 1.12fr;gap:var(--gap);align-items:start;}
+@media (max-width:900px){.tank-grid{grid-template-columns:1fr;}}
+.mode-switch{display:flex;gap:.4rem;padding:.35rem;border-radius:var(--radius-sm);margin-bottom:1.15rem;}
+.mode-btn{
+  flex:1;padding:.62rem .4rem;border:none;border-radius:8px;background:transparent;
+  font-size:.74rem;font-weight:800;letter-spacing:.08em;color:var(--text-muted);
+  transition:background .22s var(--ease),color .22s var(--ease);
+}
+.mode-btn.active{background:var(--accent);color:#06281c;}
+.field-row-3{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;}
+.field-head{display:flex;align-items:baseline;justify-content:space-between;gap:.5rem;}
+.field-val{font-family:var(--font-mono);font-size:.8rem;font-weight:700;color:var(--accent-strong);}
+.field.is-locked{opacity:.42;}
+.field.is-locked input{pointer-events:none;}
+.neu-range{
+  -webkit-appearance:none;appearance:none;width:100%;height:12px;border-radius:999px;
+  background:var(--bg);box-shadow:inset 3px 3px 7px var(--shadow-dark),inset -3px -3px 7px var(--shadow-light);
+}
+.neu-range::-webkit-slider-thumb{
+  -webkit-appearance:none;width:20px;height:20px;border-radius:50%;
+  background:var(--accent);box-shadow:2px 2px 6px var(--shadow-dark);cursor:pointer;
+}
+.neu-range::-moz-range-thumb{width:20px;height:20px;border:none;border-radius:50%;background:var(--accent);cursor:pointer;}
+.tank-actions{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.9rem;}
+.tank-actions .btn{padding:.7rem 1.1rem;font-size:.8rem;}
+.tank-stage{border-radius:var(--radius-md);padding:.9rem .9rem .5rem;}
+.tank-stage svg{width:100%;height:auto;display:block;}
+.tk-pipe{fill:none;stroke:var(--rail);stroke-width:13;stroke-linecap:round;stroke-linejoin:round;}
+.tk-flow{
+  fill:none;stroke:var(--accent);stroke-width:5;stroke-linecap:round;stroke-linejoin:round;
+  stroke-dasharray:9 13;animation:tkFlow .9s linear infinite;
+}
+.tk-flow.is-off{animation:none;opacity:0;}
+.tk-jet{stroke:var(--accent);stroke-width:4;stroke-linecap:round;stroke-dasharray:7 11;animation:tkFlow .55s linear infinite;}
+.tk-jet.is-off{animation:none;opacity:0;}
+@keyframes tkFlow{to{stroke-dashoffset:-44;}}
+.tk-wall{fill:var(--bg);stroke:var(--text-muted);stroke-width:2.5;}
+.tk-water{fill:var(--accent);opacity:.72;}
+.tk-water-back{fill:var(--accent);opacity:.32;}
+.tk-wave-a{transform-box:view-box;animation:tkWave 3.4s linear infinite;}
+.tk-wave-b{transform-box:view-box;animation:tkWave 5.2s linear infinite reverse;}
+@keyframes tkWave{from{transform:translateX(0);}to{transform:translateX(-100px);}}
+.tk-tick{stroke:var(--text-muted);stroke-width:1.4;}
+.tk-txt{font-family:var(--font-mono);font-size:10.5px;fill:var(--text-muted);}
+.tk-txt-big{font-family:var(--font-mono);font-size:27px;font-weight:700;fill:var(--text-primary);}
+.tk-sp{stroke:var(--text-primary);stroke-width:1.6;stroke-dasharray:6 5;}
+.tk-alarm{stroke:var(--danger);stroke-width:1.2;stroke-dasharray:3 6;opacity:.7;}
+.tk-valve-body{fill:var(--bg-elevated);stroke:var(--text-muted);stroke-width:2;}
+.tk-valve-live{fill:var(--accent);stroke:none;}
+.tk-fill-accent{fill:var(--accent);}
+.tk-fill-rail{fill:var(--rail);}
+.tk-txt-alarm{fill:var(--danger);}
+.tk-txt-strong{fill:var(--text-primary);}
+.tk-txt-sec{fill:var(--text-secondary);}
+.tk-sig{fill:none;stroke:var(--text-muted);stroke-width:1.3;stroke-dasharray:5 4;}
+.tank-status{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;margin-top:1rem;}
+.status-pill{
+  padding:.35rem .8rem;border-radius:999px;font-size:.68rem;font-weight:800;letter-spacing:.06em;
+  background:var(--accent-soft);color:var(--accent-strong);font-family:var(--font-mono);
+}
+.status-pill.muted{background:var(--bg);color:var(--text-muted);}
+.status-pill.warn{background:rgba(201,130,42,.18);color:var(--amber);}
+.status-pill.alarm{background:rgba(209,73,91,.18);color:var(--danger);}
+.tank-readouts{display:grid;grid-template-columns:repeat(5,1fr);gap:.5rem;margin-top:.85rem;}
+@media (max-width:620px){.tank-readouts{grid-template-columns:repeat(2,1fr);}}
+.tank-readouts > div{text-align:center;padding:.65rem .35rem;border-radius:var(--radius-sm);background:var(--bg);}
+.tank-readouts strong{font-size:.92rem;font-family:var(--font-mono);color:var(--accent-strong);}
+.tk-trend{border-radius:var(--radius-md);padding:.8rem;margin-top:.9rem;}
+.tk-trend svg{width:100%;height:auto;display:block;}
+.tk-trend-pv{fill:none;stroke:var(--accent);stroke-width:2.4;stroke-linejoin:round;stroke-linecap:round;}
+.tk-trend-op{fill:none;stroke:var(--amber);stroke-width:1.6;stroke-dasharray:4 4;stroke-linejoin:round;}
+.tk-trend-sp{stroke:var(--text-muted);stroke-width:1.3;stroke-dasharray:5 5;}
+.tk-legend{display:flex;gap:1.1rem;flex-wrap:wrap;margin-top:.55rem;font-size:.68rem;color:var(--text-muted);font-weight:600;}
+.tk-legend i{display:inline-block;width:14px;height:3px;border-radius:2px;margin-right:.35rem;vertical-align:middle;}
+.calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);align-items:start;}
+@media (max-width:760px){.calc-grid{grid-template-columns:1fr;}}
+.field{display:flex;flex-direction:column;gap:.4rem;margin-bottom:1.1rem;}
+.field label{font-size:.78rem;font-weight:700;color:var(--text-secondary);}
+.field input{
+  border:none;border-radius:var(--radius-sm);padding:.75rem .9rem;
+  font-family:var(--font-mono);font-size:.9rem;color:var(--text-primary);background:transparent;
+}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;}
+.calc-output{border-radius:var(--radius-md);padding:1.4rem;text-align:center;}
+.calc-output .pv-value{font-size:2.4rem;font-weight:800;color:var(--accent-strong);font-family:var(--font-mono);}
+.calc-output .pv-unit{font-size:.85rem;color:var(--text-secondary);font-weight:600;margin-top:.15rem;}
+.calc-bar-track{height:10px;border-radius:999px;margin-top:1.3rem;overflow:hidden;}
+.calc-bar-fill{height:100%;background:var(--accent);width:0%;transition:width .25s var(--ease);border-radius:999px;}
+.calc-scale-labels{display:flex;justify-content:space-between;margin-top:.5rem;font-size:.7rem;color:var(--text-muted);font-family:var(--font-mono);}
+.calc-note{font-size:.78rem;color:var(--text-muted);margin-top:1.1rem;}
+
+/* ---- DOWNLOADS ---- */
+.downloads-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap);}
+@media (max-width:820px){.downloads-grid{grid-template-columns:1fr;}}
+.dl-card{
+  border-radius:var(--radius-md);padding:1.3rem;display:flex;flex-direction:column;gap:1rem;
+}
+.dl-top{display:flex;align-items:center;gap:.85rem;}
+.dl-icon{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex:none;}
+.dl-icon svg{width:24px;height:24px;}
+.dl-title{font-size:.9rem;font-weight:700;}
+.dl-sub{font-size:.74rem;color:var(--text-muted);margin-top:.1rem;}
+.dl-btn{
+  align-self:flex-start;display:inline-flex;align-items:center;gap:.4rem;
+  padding:.55rem 1rem;border-radius:var(--radius-sm);border:none;
+  font-size:.78rem;font-weight:700;color:var(--accent-strong);
+}
+.dl-btn svg{width:14px;height:14px;}
+
+/* ---- CONTACT / FOOTER ---- */
+.contact-card{
+  border-radius:var(--radius-lg);padding:clamp(1.75rem,4vw,2.5rem);
+  display:grid;grid-template-columns:1.2fr 1fr;gap:var(--gap);align-items:center;
+}
+@media (max-width:760px){.contact-card{grid-template-columns:1fr;}}
+.contact-card h2{font-size:clamp(1.3rem,2.5vw,1.7rem);max-width:18ch;}
+.contact-card p{margin-top:.7rem;color:var(--text-secondary);font-size:.9rem;max-width:44ch;}
+.contact-methods{display:flex;flex-direction:column;gap:.7rem;}
+.contact-methods a{
+  display:flex;align-items:center;gap:.7rem;padding:.85rem 1rem;border-radius:var(--radius-sm);
+  font-size:.85rem;font-weight:700;
+}
+.contact-methods svg{width:17px;height:17px;color:var(--accent);}
+
+/* ---- SOCIAL / CONNECT ---- */
+.social-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(218px,1fr));gap:.9rem;}
+.social-card{
+  display:flex;align-items:center;gap:.85rem;padding:.85rem .95rem;border-radius:var(--radius-md);
+  transition:transform .22s var(--ease),box-shadow .22s var(--ease);
+}
+.social-card:hover,.social-card:focus-visible{
+  transform:translateY(-3px);
+  box-shadow:6px 6px 15px var(--shadow-dark),-6px -6px 15px var(--shadow-light),inset 0 0 0 1.5px var(--brand,var(--accent));
+}
+.social-ico{
+  width:42px;height:42px;border-radius:13px;flex:none;
+  display:flex;align-items:center;justify-content:center;color:var(--brand,var(--accent));
+}
+.social-ico svg{width:21px;height:21px;}
+.social-meta{display:flex;flex-direction:column;min-width:0;}
+.social-meta strong{font-size:.86rem;font-weight:700;line-height:1.3;}
+.social-meta span{
+  font-size:.71rem;color:var(--text-muted);font-family:var(--font-mono);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.social-arrow{
+  width:15px;height:15px;margin-left:auto;flex:none;color:var(--text-muted);
+  transition:transform .22s var(--ease),color .22s var(--ease);
+}
+.social-card:hover .social-arrow{color:var(--brand,var(--accent));transform:translate(2px,-2px);}
+.social-note{margin-top:1rem;font-size:.78rem;color:var(--text-muted);}
+.footer-social{display:flex;gap:.55rem;align-items:center;}
+.footer-social a{
+  width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;
+  color:var(--text-muted);transition:color .2s var(--ease),transform .2s var(--ease);
+}
+.footer-social a:hover{color:var(--brand,var(--accent));transform:translateY(-2px);}
+.footer-social svg{width:15px;height:15px;}
+
+footer{
+  max-width:var(--maxw);margin:0 auto;padding:1.5rem clamp(1rem,3vw,2rem) 2.5rem;
+  display:flex;flex-direction:column;gap:.85rem;
+  font-size:.76rem;color:var(--text-muted);
+}
+
+/* generic reveal (single orchestrated hero-only motion) */
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.hero-eyebrow,.hero h1,.hero .desc,.hero-actions,.hero-strip{
+  animation:fadeUp .6s var(--ease) both;
+}
+.hero h1{animation-delay:.06s;}
+.hero .desc{animation-delay:.12s;}
+.hero-actions{animation-delay:.18s;}
+.hero-strip{animation-delay:.22s;}
+
+
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     SIDEBAR TOGGLE (edge tab) + BACKDROP
+     Sidebar is auto-hidden; press the tab to bring it out,
+     press again (or click outside / Escape) to send it back.
+     ============================================================ -->
+<button class="sidebar-tab neu-out" id="sidebarTab" aria-label="Open sidebar" aria-expanded="false" aria-controls="sidebar">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m9 6 6 6-6 6"/></svg>
+</button>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<div class="shell" id="top">
+
+  <!-- ============================================================
+       SIDEBAR
+       ============================================================ -->
+  <aside class="sidebar neu-out" id="sidebar">
+
+    <div class="profile-photo-frame neu-in">
+      <img src="data:image/jpeg;base64,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" alt="MD. Ibrahim Khalil" class="profile-photo-img">
+    </div>
+
+    <div class="id-block">
+      <h1>MD. Ibrahim Khalil</h1>
+      <p class="role">Industrial Automation Specialist</p>
+      </div>
+
+    <ul class="contact-list">
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.4 15.7v3.1a1.8 1.8 0 0 1-2 1.8 17.6 17.6 0 0 1-7.7-2.7 17.4 17.4 0 0 1-5.3-5.3A17.6 17.6 0 0 1 2.7 4.9 1.8 1.8 0 0 1 4.5 2.9h3.1a1.8 1.8 0 0 1 1.8 1.5c.1.9.3 1.8.6 2.7a1.8 1.8 0 0 1-.4 1.9l-1.3 1.3a14 14 0 0 0 5.3 5.3l1.3-1.3a1.8 1.8 0 0 1 1.9-.4c.9.3 1.8.5 2.7.6a1.8 1.8 0 0 1 1.5 1.8Z"/></svg>
+        <a href="tel:+8801741412002">+880 1741 412002</a>
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5h18v14H3z"/><path d="m3 6 9 7 9-7"/></svg>
+        <a href="mailto:tech.ibrahimkhalil@gmail.com">tech.ibrahimkhalil@gmail.com</a>
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        <span>Dhaka, Bangladesh</span>
+      </li>
+    </ul>
+
+    <nav class="sidenav">
+      <ul>
+        <li><a href="#about" class="nav-link active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg><span>About</span></a></li>
+        <li><a href="#competencies" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 2 7l10 5 10-5-10-5Z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg><span>Competencies</span></a></li>
+        <li><a href="#projects" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>Projects</span></a></li>
+        <li><a href="#codelab" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m8 9-4 3 4 3M16 9l4 3-4 3M13 6l-2 12"/></svg><span>Code Lab</span></a></li>
+        <li><a href="#calculator" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg><span>mA Calculator</span></a></li>
+        <li><a href="#downloads" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0-4-4m4 4 4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg><span>Downloads</span></a></li>
+        <li><a href="#contact" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5h18v14H3z"/><path d="m3 6 9 7 9-7"/></svg><span>Contact</span></a></li>
+        <li><a href="#social" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></svg><span>Connect</span></a></li>
+      </ul>
+    </nav>
+
+    <div class="side-controls">
+      <button class="ctrl-btn neu-flat" id="themeToggle" aria-label="Toggle dark mode" style="flex:1 1 100%;">
+        <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>
+        <span>Theme</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ============================================================
+       MAIN CONTENT
+       ============================================================ -->
+  <main>
+
+    <!-- ---------- HERO ---------- -->
+    <section class="hero neu-out" aria-label="Introduction">
+      <div class="hero-eyebrow">Certified BMS Programmer · SCADA Engineer</div>
+      <h1>I turn plant-floor signals into <em>systems</em> operators can trust.</h1>
+      <p class="desc">Automation Engineer with 3+ years of experience in PLC, SCADA, BMS/HVAC systems, industrial communication, motion control, and IIoT. Skilled in multi-vendor automation integration, system commissioning, and troubleshooting.</p>
+      <div class="hero-actions">
+        <a href="#projects" class="btn btn-primary">
+          <span>View featured projects</span>
+        </a>
+        <a href="#downloads" class="btn btn-ghost neu-flat">
+          <span>Download CV</span>
+        </a>
+      </div>
+      <div class="hero-strip">
+        <span class="chip neu-flat">Siemens S7-1200 / 1500 / 300 / 400</span>
+        <span class="chip neu-flat">TIA Portal · WinCC</span>
+        <span class="chip neu-flat">Delta Controls GCL+</span>
+        <span class="chip neu-flat">PROFINET · Modbus · OPC UA</span>
+      </div>
+    </section>
+
+    <!-- ---------- METRICS ---------- -->
+    <section aria-label="Impact metrics">
+      <div class="metrics-grid">
+        <div class="metric-card neu-flat">
+          <div class="num"><span class="counter" data-target="200">0</span>+</div>
+          <div class="label">Automation Engineers Trained</div>
+        </div>
+        <div class="metric-card neu-flat">
+          <div class="num"><span class="counter" data-target="100">0</span>+</div>
+          <div class="label">SCADA Engineers Mentored</div>
+        </div>
+        <div class="metric-card neu-flat">
+          <div class="num"><span class="counter" data-target="100">0</span>+</div>
+          <div class="label">BMS Engineers Mentored</div>
+        </div>
+        <div class="metric-card neu-flat">
+          <div class="num"><span class="counter" data-target="250">0</span>+</div>
+          <div class="label">Custody Transfer I/Os Commissioned</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- ABOUT ---------- -->
+    <section id="about" aria-label="About and education">
+      <div class="section-head">
+        <div class="kicker">Background</div>
+        <h2>Education & current role</h2>
+      </div>
+      <div class="about-grid">
+        <div class="about-card neu-flat">
+          <div class="timeline">
+            <div class="timeline-item">
+              <h4>Research Engineer & Technical Mentor</h4>
+              <div class="meta">Ulterior Engineering Intl. · Mohakhali, Dhaka</div>
+              <p class="desc">Delivering turnkey PLC, SCADA, and BMS automation solutions for industrial facilities through rigorous research, design, and field commissioning. Combines technical execution with engineering leadership by mentoring controls engineers on active, high-stakes projects to build high-performing technical teams.</p>
+            </div>
+            <div class="timeline-item">
+              <h4>B.Sc. in Electrical & Electronic Engineering</h4>
+              <div class="meta">Uttara University · Pursuing</div>
+            </div>
+            <div class="timeline-item">
+              <h4>Diploma in Electrical Engineering</h4>
+              <div class="meta">Infra Polytechnic Institute · 2024</div>
+            </div>
+            <div class="timeline-item">
+              <h4>Secondary School Certificate</h4>
+              <div class="meta">Balihari Secondary School · 2020</div>
+            </div>
+          </div>
+        </div>
+        <div class="about-card neu-flat">
+          <h3 style="font-size:.95rem;margin-bottom:1rem;">Certifications</h3>
+          <div class="cert-list">
+            <div class="cert-item neu-in">
+              <!-- PLACEHOLDER: Insert certificate badge image here (e.g. <img src="bms-badge.png" alt="Certified BMS Programmer Certificate">) -->
+              <div class="badge-frame">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20" style="color:var(--rail);"><circle cx="12" cy="8" r="6"/><path d="m9 13-2 8 5-3 5 3-2-8"/></svg>
+              </div>
+              <div>
+                <div class="t">Certified BMS Programmer</div>
+                <div class="s">George University, Canada, Delta Controls</div>
+              </div>
+            </div>
+            <div class="cert-item neu-in">
+              <!-- PLACEHOLDER: Insert certificate badge image here (e.g. <img src="emi-badge.png" alt="EMI Level 1 & 2 Certificate">) -->
+              <div class="badge-frame">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20" style="color:var(--rail);"><circle cx="12" cy="8" r="6"/><path d="m9 13-2 8 5-3 5 3-2-8"/></svg>
+              </div>
+              <div>
+                <div class="t">Electrical Maintenance & Installation — Level 1 & 2</div>
+                <div class="s">National Skills Development Authority (NSDA)</div>
+              </div>
+            </div>
+            <div class="cert-item neu-in">
+              <!-- PLACEHOLDER: Insert certificate badge image here (e.g. <img src="bteb-badge.png" alt="Basic Electronics Certificate">) -->
+              <div class="badge-frame">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20" style="color:var(--rail);"><circle cx="12" cy="8" r="6"/><path d="m9 13-2 8 5-3 5 3-2-8"/></svg>
+              </div>
+              <div>
+                <div class="t">Basic Electronics & Computer Training</div>
+                <div class="s">Bangladesh Technical Education Board (BTEB)</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- COMPETENCIES ---------- -->
+    <section id="competencies" aria-label="Core competencies">
+      <div class="section-head">
+        <div class="kicker">Skill matrix</div>
+        <h2>Platforms, protocols & tooling</h2>
+      </div>
+      <div class="matrix-grid">
+        <div class="matrix-card neu-flat">
+          <div class="icon-wrap neu-in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="3"/><circle cx="9" cy="10" r="1.2" fill="currentColor" stroke="none"/><circle cx="15" cy="10" r="1.2" fill="currentColor" stroke="none"/><path d="M8 15c1.2 1 2.6 1.5 4 1.5s2.8-.5 4-1.5M9 4V2M15 4V2M4 9H2M4 15H2M22 9h-2M22 15h-2"/></svg></div>
+          <h3>AI-Based Automation</h3>
+          <ul>
+            <li>Anomaly detection on process & vibration data</li>
+            <li>Predictive maintenance models for rotating equipment</li>
+            <li>ML-assisted setpoint & energy optimization</li>
+          </ul>
+        </div>
+        <div class="matrix-card neu-flat">
+          <div class="icon-wrap neu-in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="3" width="14" height="18" rx="1"/><path d="M9 7h1.5M13.5 7H15M9 11h1.5M13.5 11H15M9 15h1.5M13.5 15H15"/><path d="M10 21v-3.5h4V21"/></svg></div>
+          <h3>BMS & HVAC</h3>
+          <ul>
+            <li>Delta Controls · GCL+ & Python Programming</li>
+            <li>BACnet MS/TP & IP · DDC Control</li>
+            <li>AHU / FCU / VAV PID Cascading</li>
+          </ul>
+        </div>
+        <div class="matrix-card neu-flat">
+          <div class="icon-wrap neu-in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M6.5 13.5 9.5 9l2.2 2.4L15.5 7l3 4"/><path d="M8 21h8M12 17v4"/></svg></div>
+          <h3>SCADA System Integration</h3>
+          <ul>
+            <li>Siemens WinCC</li>
+            <li>Ignition</li>
+            <li>Advanced HMI, AVEVA</li>
+          </ul>
+        </div>
+        <div class="matrix-card neu-flat">
+          <div class="icon-wrap neu-in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h4l2-7 4 14 2-7h4"/></svg></div>
+          <h3>Industrial Communication <span class="card-badge">IIoT Integration</span></h3>
+          <ul>
+            <li>PROFINET · PROFIBUS</li>
+            <li>Modbus RTU/TCP · Ethernet · RS232/RS485</li>
+            <li>OPC · MQTT · DNP3 · IIoT · Remote Monitoring</li>
+          </ul>
+        </div>
+        <div class="matrix-card neu-flat">
+          <div class="icon-wrap neu-in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3.5" y="17.5" width="6" height="3" rx="1"/><path d="M6.5 17.5V14"/><path d="M6.5 14 12 10.3"/><circle cx="6.5" cy="14" r="1.15" fill="currentColor" stroke="none"/><path d="M12 10.3 16.5 12.6"/><circle cx="12" cy="10.3" r="1.15" fill="currentColor" stroke="none"/><path d="M16.5 12.6 19 10.6M16.5 12.6l1.3 3.1"/></svg></div>
+          <h3>Motion & Robotics</h3>
+          <ul>
+            <li>WECON – Kinco Motion Controller</li>
+            <li>EtherCAT – CANopen</li>
+            <li>Motion Control Servo Drive · Multi-Axis Servo Control</li>
+          </ul>
+        </div>
+        <div class="matrix-card neu-flat">
+          <div class="icon-wrap neu-in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 21h8M12 18v3"/></svg></div>
+          <h3>Siemens Automation</h3>
+          <ul>
+            <li>S7-1200 · S7-1500 · S7-300 · S7-400 · Redundant</li>
+            <li>ET 200 Distributed I/O</li>
+            <li>TIA Portal · STEP 7 · WinCC SCADA</li>
+          </ul>
+        </div>
+        <div class="matrix-card neu-flat">
+          <div class="icon-wrap neu-in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5.5" width="15" height="9.5" rx="1"/><path d="M3 10.25h15M7.5 5.5v9.5M12.5 5.5v9.5"/><path d="M10.5 15v3M8 21l2.5-3h3L16 21"/></svg></div>
+          <h3>Solar System Design with SCADA</h3>
+          <ul>
+            <li>Real-Time Data Acquisition & Visualization</li>
+            <li>Remote Control & Performance Diagnostics</li>
+            <li>Multi-Protocol Field Integration</li>
+          </ul>
+        </div>
+        <div class="matrix-card neu-flat">
+          <div class="icon-wrap neu-in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 2 7l10 5 10-5-10-5Z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+          <h3>Multi-Vendor Integration</h3>
+          <ul>
+            <li>Siemens · Allen-Bradley · Delta · Mitsubishi · LS</li>
+            <li>Kinco · WECON · Flexem</li>
+            <li>Phoenix Contact · WAGO · MOXA · ODOT</li>
+          </ul>
+        </div>
+        <div class="matrix-card neu-flat">
+          <div class="icon-wrap neu-in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12.5" r="8"/><path d="M12 12.5 8.8 9"/><path d="M12 5.2v1.4M19 12.5h-1.4M5 12.5h1.4M6.9 6.9l1 1M17.1 6.9l-1 1"/><circle cx="12" cy="12.5" r="1.15" fill="currentColor" stroke="none"/></svg></div>
+          <h3>Instrumentation & Calibration</h3>
+          <ul>
+            <li>HART Smart Transmitter Calibration</li>
+            <li>4–20 mA Loop & Signal Verification</li>
+            <li>Calibration Documentation & Compliance</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- PROJECTS ---------- -->
+    <section id="projects" aria-label="Featured projects">
+      <div class="section-head">
+        <div class="kicker">Selected work</div>
+        <h2>Featured projects</h2>
+        <p class="lede">Filter by discipline to see the control architecture behind each system.</p>
+      </div>
+
+      <div class="filter-row" role="tablist" aria-label="Project category filters">
+        <button class="filter-btn neu-flat active" data-filter="all">All</button>
+        <button class="filter-btn neu-flat" data-filter="scada">Siemens & SCADA</button>
+        <button class="filter-btn neu-flat" data-filter="bms">BMS & HVAC</button>
+        <button class="filter-btn neu-flat" data-filter="motion">Motion & Robotics</button>
+        <button class="filter-btn neu-flat" data-filter="iiot">IIoT & Data</button>
+      </div>
+
+      <div class="projects-grid" id="projectsGrid"><!-- injected by JS --></div>
+    </section>
+
+    <!-- ---------- CODE LAB ---------- -->
+    <section id="codelab" aria-label="Interactive code and logic lab">
+      <div class="section-head">
+        <div class="kicker">Under the hood</div>
+        <h2>Code & logic lab</h2>
+        <p class="lede">Representative snippets from real polling scripts, PID routines and reporting procedures.</p>
+      </div>
+      <div class="codelab neu-flat">
+        <div class="codelab-tabs" role="tablist">
+          <button class="codelab-tab active" data-tab="python">Python — PLC Polling</button>
+          <button class="codelab-tab" data-tab="delta">Delta Controls — GCL+</button>
+          <button class="codelab-tab" data-tab="sql">SQL — Shift Report</button>
+          <button class="codelab-tab" data-tab="st">Structured Text — Interlocks</button>
+        </div>
+
+        <div class="codelab-panel active" data-panel="python">
+          <div class="code-window">
+            <div class="win-bar"><span class="dot" style="background:#f2748a;"></span><span class="dot" style="background:#e2a94e;"></span><span class="dot" style="background:#67d99f;"></span><span class="filename">plc_poll.py</span></div>
+            <pre><code><span class="c4"># Poll Siemens S7-1200 holding registers via snap7</span>
+<span class="c2">import</span> snap7
+<span class="c2">from</span> snap7.util <span class="c2">import</span> get_real
+<span class="c2">import</span> time
+
+plc = snap7.client.Client()
+plc.connect(<span class="c3">"192.168.0.10"</span>, <span class="c1">0</span>, <span class="c1">1</span>)
+
+<span class="c2">def</span> read_flow_pv():
+    data = plc.db_read(db_number=<span class="c1">10</span>, start=<span class="c1">0</span>, size=<span class="c1">4</span>)
+    <span class="c2">return</span> get_real(data, <span class="c1">0</span>)
+
+<span class="c2">while</span> <span class="c1">True</span>:
+    pv = read_flow_pv()
+    print(<span class="c3">f"Custody transfer flow: {pv:.2f} m3/h"</span>)
+    time.sleep(<span class="c1">1</span>)</code></pre>
+          </div>
+        </div>
+
+        <div class="codelab-panel" data-panel="delta">
+          <div class="code-window">
+            <div class="win-bar"><span class="dot" style="background:#f2748a;"></span><span class="dot" style="background:#e2a94e;"></span><span class="dot" style="background:#67d99f;"></span><span class="filename">ahu_pid.gcl</span></div>
+            <pre><code><span class="c4">// AHU discharge-air PID cascade, GCL+</span>
+PROGRAM AHU_DAT_PID
+
+VAR
+  DAT_SP    : REAL := <span class="c1">13.5</span>;   <span class="c4">// setpoint, deg C</span>
+  DAT_PV    : REAL;
+  VLV_OUT   : REAL;
+  KP        : REAL := <span class="c1">2.2</span>;
+  KI        : REAL := <span class="c1">0.35</span>;
+END_VAR
+
+DAT_PV := AI[<span class="c3">"DAT_SENSOR"</span>];
+VLV_OUT := PID(DAT_SP, DAT_PV, KP, KI, <span class="c1">0.0</span>);
+AO[<span class="c3">"CHW_VALVE"</span>] := CLAMP(VLV_OUT, <span class="c1">0</span>, <span class="c1">100</span>);</code></pre>
+          </div>
+        </div>
+
+        <div class="codelab-panel" data-panel="sql">
+          <div class="code-window">
+            <div class="win-bar"><span class="dot" style="background:#f2748a;"></span><span class="dot" style="background:#e2a94e;"></span><span class="dot" style="background:#67d99f;"></span><span class="filename">sp_ShiftReport.sql</span></div>
+            <pre><code><span class="c4">-- Aggregate custody-transfer totals per shift</span>
+<span class="c2">CREATE PROCEDURE</span> sp_ShiftProductionReport
+  @ShiftDate <span class="c2">DATE</span>,
+  @ShiftCode <span class="c2">VARCHAR</span>(<span class="c1">2</span>)
+<span class="c2">AS</span>
+<span class="c2">BEGIN</span>
+  <span class="c2">SELECT</span> TagName,
+         SUM(FlowTotal)  <span class="c2">AS</span> TotalVolume_m3,
+         AVG(Temperature) <span class="c2">AS</span> AvgTemp_C
+  <span class="c2">FROM</span> dbo.CustodyTransferLog
+  <span class="c2">WHERE</span> CAST(LogTime <span class="c2">AS</span> <span class="c2">DATE</span>) = @ShiftDate
+    <span class="c2">AND</span> Shift = @ShiftCode
+  <span class="c2">GROUP BY</span> TagName;
+<span class="c2">END</span>;</code></pre>
+          </div>
+        </div>
+
+        <div class="codelab-panel" data-panel="st">
+          <div class="code-window">
+            <div class="win-bar"><span class="dot" style="background:#f2748a;"></span><span class="dot" style="background:#e2a94e;"></span><span class="dot" style="background:#67d99f;"></span><span class="filename">motor_interlocks.st</span></div>
+            <pre><code><span class="c4">(* Motor start interlock chain — IEC 61131-3 Structured Text *)</span>
+<span class="c2">IF</span> NOT E_Stop <span class="c2">AND</span> Guard_Closed <span class="c2">AND</span> Thermal_OK
+   <span class="c2">AND</span> NOT High_Vibration <span class="c2">AND</span> Lube_Pressure_OK <span class="c2">THEN</span>
+    Permit_Start := <span class="c1">TRUE</span>;
+<span class="c2">ELSE</span>
+    Permit_Start := <span class="c1">FALSE</span>;
+    Motor_Run    := <span class="c1">FALSE</span>;
+<span class="c2">END_IF</span>;
+
+<span class="c2">IF</span> Start_Cmd <span class="c2">AND</span> Permit_Start <span class="c2">THEN</span>
+    Motor_Run := <span class="c1">TRUE</span>;
+<span class="c2">END_IF</span>;</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- CALCULATOR ---------- -->
+    <section id="calculator" aria-label="4-20mA process variable calculator">
+      <div class="section-head">
+        <div class="kicker">Field tool</div>
+        <h2>4–20 mA → PV & PLC scaling calculator</h2>
+        <p class="lede">Convert a live loop current into an engineering value and its scaled PLC raw count.</p>
+      </div>
+      <div class="calc-card neu-flat">
+        <div class="calc-grid">
+          <div>
+            <div class="field">
+              <label for="mAInput">Signal current (mA)</label>
+              <input type="number" id="mAInput" class="neu-in" value="12" min="4" max="20" step="0.01">
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="pvMin">PV min (0%)</label>
+                <input type="number" id="pvMin" class="neu-in" value="0">
+              </div>
+              <div class="field-row" style="display:contents;">
+                <div class="field">
+                  <label for="pvMax">PV max (100%)</label>
+                  <input type="number" id="pvMax" class="neu-in" value="100">
+                </div>
+              </div>
+            </div>
+            <div class="field">
+              <label for="pvUnit">Engineering unit</label>
+              <input type="text" id="pvUnit" class="neu-in" value="m³/h">
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="rawMin">PLC raw min</label>
+                <input type="number" id="rawMin" class="neu-in" value="0">
+              </div>
+              <div class="field">
+                <label for="rawMax">PLC raw max</label>
+                <input type="number" id="rawMax" class="neu-in" value="27648">
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="calc-output neu-in">
+              <div class="pv-value" id="pvOut">50.00</div>
+              <div class="pv-unit"><span id="pvUnitOut">m³/h</span> · <span>Process Variable</span></div>
+              <div class="calc-bar-track neu-flat"><div class="calc-bar-fill" id="calcBar"></div></div>
+              <div class="calc-scale-labels"><span>4 mA</span><span>12 mA</span><span>20 mA</span></div>
+            </div>
+            <div class="calc-note">
+              <span>PLC raw value:</span>
+              <strong id="rawOut" style="color:var(--text-primary);font-family:var(--font-mono);">13824</strong>
+            </div>
+            <div class="calc-note">Formula: PV = PVmin + (mA − 4) / 16 × (PVmax − PVmin)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="calc-card neu-flat pid-card">
+        <h3 class="pid-title">PID loop simulator</h3>
+        <p class="pid-sub">Step-response simulation of a PID controller against a first-order process — adjust the gains and watch it settle.</p>
+        <div class="calc-grid">
+          <div>
+            <div class="field-row">
+              <div class="field">
+                <label for="pidKp">Kp — Proportional</label>
+                <input type="number" id="pidKp" class="neu-in" value="2" step="0.1" min="0">
+              </div>
+              <div class="field">
+                <label for="pidKi">Ki — Integral</label>
+                <input type="number" id="pidKi" class="neu-in" value="0.4" step="0.05" min="0">
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="pidKd">Kd — Derivative</label>
+                <input type="number" id="pidKd" class="neu-in" value="0.2" step="0.05" min="0">
+              </div>
+              <div class="field">
+                <label for="pidTau">Process τ (s)</label>
+                <input type="number" id="pidTau" class="neu-in" value="8" step="0.5" min="0.5">
+              </div>
+            </div>
+            <div class="field">
+              <label for="pidSP">Setpoint step (%)</label>
+              <input type="number" id="pidSP" class="neu-in" value="60" min="0" max="100" step="1">
+            </div>
+            <button class="btn btn-ghost neu-flat" id="pidReset" type="button" style="margin-top:.3rem;">Reset to defaults</button>
+          </div>
+
+          <div>
+            <div class="pid-chart-wrap neu-in">
+              <svg id="pidChart" viewBox="0 0 600 220" preserveAspectRatio="none" role="img" aria-label="PID step-response chart">
+                <line x1="0" y1="55" x2="600" y2="55" class="pid-gridline"></line>
+                <line x1="0" y1="110" x2="600" y2="110" class="pid-gridline"></line>
+                <line x1="0" y1="165" x2="600" y2="165" class="pid-gridline"></line>
+                <line id="pidSPLine" x1="0" y1="90" x2="600" y2="90" class="pid-sp-line"></line>
+                <polyline id="pidPVLine" class="pid-pv-line" points=""></polyline>
+              </svg>
+            </div>
+            <div class="pid-readouts">
+              <div><span class="pid-readout-label">Settled PV</span><strong id="pidFinal">0.0%</strong></div>
+              <div><span class="pid-readout-label">Overshoot</span><strong id="pidOvershoot">0.0%</strong></div>
+              <div><span class="pid-readout-label">Settling time</span><strong id="pidSettle">—</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ---------- TANK LEVEL LOOP ---------- -->
+      <div class="calc-card neu-flat tank-card">
+        <h3 class="pid-title">Tank level loop — inlet flow, discharge & A/M station</h3>
+        <p class="pid-sub">A live filling loop. In <strong>AUTO</strong> the PID strokes the inlet control valve to hold the level against whatever the discharge valve is pulling out; in <strong>MANUAL</strong> you stroke the valve by hand. Transfer is bumpless both ways — the station tracks the controller, and the integral is back-calculated on the way back to auto.</p>
+
+        <div class="tank-grid">
+          <!-- ---- control column ---- -->
+          <div>
+            <div class="mode-switch neu-in" role="group" aria-label="Controller mode">
+              <button type="button" class="mode-btn active" id="tkAutoBtn">AUTO</button>
+              <button type="button" class="mode-btn" id="tkManBtn">MANUAL</button>
+            </div>
+
+            <div class="field-row">
+              <div class="field">
+                <label for="tkSP">Level setpoint (%)</label>
+                <input type="number" id="tkSP" class="neu-in" value="60" min="0" max="100" step="1">
+              </div>
+              <div class="field">
+                <label for="tkCap">Tank capacity (m³)</label>
+                <input type="number" id="tkCap" class="neu-in" value="20" min="1" step="1">
+              </div>
+            </div>
+
+            <div class="field-row">
+              <div class="field">
+                <label for="tkQmax">Inlet valve @100% (m³/h)</label>
+                <input type="number" id="tkQmax" class="neu-in" value="240" min="1" step="10">
+              </div>
+              <div class="field">
+                <label for="tkDmax">Discharge @100% (m³/h)</label>
+                <input type="number" id="tkDmax" class="neu-in" value="300" min="0" step="10">
+              </div>
+            </div>
+
+            <div class="field-row-3">
+              <div class="field">
+                <label for="tkKp">Kp</label>
+                <input type="number" id="tkKp" class="neu-in" value="4.5" step="0.1" min="0">
+              </div>
+              <div class="field">
+                <label for="tkKi">Ki</label>
+                <input type="number" id="tkKi" class="neu-in" value="0.035" step="0.005" min="0">
+              </div>
+              <div class="field">
+                <label for="tkKd">Kd</label>
+                <input type="number" id="tkKd" class="neu-in" value="6" step="0.5" min="0">
+              </div>
+            </div>
+
+            <div class="field is-locked" id="tkManField">
+              <div class="field-head">
+                <label for="tkMV">Manual valve output</label>
+                <span class="field-val" id="tkMVVal">0 %</span>
+              </div>
+              <input type="range" id="tkMV" class="neu-range" min="0" max="100" step="1" value="0">
+            </div>
+
+            <div class="field">
+              <div class="field-head">
+                <label for="tkDrain">Discharge valve (load)</label>
+                <span class="field-val" id="tkDrainVal">45 %</span>
+              </div>
+              <input type="range" id="tkDrain" class="neu-range" min="0" max="100" step="1" value="45">
+            </div>
+
+            <div class="calc-note" style="margin-top:0;">Level is an integrating process, so these gains are tuned separately from the first-order loop above. Gravity drain: Q<sub>out</sub> = opening × Q<sub>max</sub> × √(level).</div>
+
+            <div class="tank-actions">
+              <button class="btn btn-primary" id="tkRunBtn" type="button">Pause</button>
+              <button class="btn btn-ghost neu-flat" id="tkResetBtn" type="button">Reset loop</button>
+            </div>
+          </div>
+
+          <!-- ---- animated P&ID stage ---- -->
+          <div>
+            <div class="tank-stage neu-in">
+              <svg viewBox="0 0 600 330" role="img" aria-label="Animated tank level control loop with inlet control valve and discharge valve">
+                <defs>
+                  <clipPath id="tkClip"><rect x="202" y="44" width="196" height="202" rx="10"></rect></clipPath>
+                </defs>
+
+                <!-- suction header, pump, inlet control valve -->
+                <path class="tk-pipe" d="M26,68 H202"></path>
+                <path class="tk-flow" id="tkFlowIn" d="M26,68 H202"></path>
+                <circle cx="58" cy="68" r="17" class="tk-valve-body"></circle>
+                <path d="M51,59 L71,68 L51,77 Z" class="tk-fill-accent"></path>
+                <text x="58" y="98" text-anchor="middle" class="tk-txt">P-101</text>
+                <rect x="142" y="32" width="8" height="18" class="tk-valve-body"></rect>
+                <rect x="126" y="22" width="40" height="10" rx="5" class="tk-valve-body"></rect>
+                <path d="M130,54 L130,82 L146,68 Z" class="tk-valve-body"></path>
+                <path d="M162,54 L162,82 L146,68 Z" class="tk-valve-body"></path>
+                <g id="tkValveLive" opacity="0.05">
+                  <path d="M130,54 L130,82 L146,68 Z" class="tk-valve-live"></path>
+                  <path d="M162,54 L162,82 L146,68 Z" class="tk-valve-live"></path>
+                </g>
+                <text x="146" y="99" text-anchor="middle" class="tk-txt">FCV-101</text>
+                <text x="146" y="113" text-anchor="middle" class="tk-txt tk-txt-strong" id="tkValveTxt">0% · 0 m³/h</text>
+
+                <!-- tank shell + water -->
+                <rect x="200" y="40" width="200" height="208" rx="12" class="tk-wall"></rect>
+                <g clip-path="url(#tkClip)">
+                  <g id="tkWaterG" transform="translate(0,155)">
+                    <g class="tk-wave-b"><path class="tk-water-back" d="M110,46 q25,-8 50,0 t50,0 t50,0 t50,0 t50,0 t50,0 t50,0 t50,0 t50,0 V320 H110 Z"></path></g>
+                    <g class="tk-wave-a"><path class="tk-water" d="M110,52 q25,-8 50,0 t50,0 t50,0 t50,0 t50,0 t50,0 t50,0 t50,0 t50,0 V320 H110 Z"></path></g>
+                  </g>
+                </g>
+
+                <!-- downcomer + falling stream -->
+                <path class="tk-pipe" d="M196,68 H220 Q232,68 232,80 V104"></path>
+                <path class="tk-flow" id="tkFlowIn2" d="M196,68 H220 Q232,68 232,80 V104"></path>
+                <line id="tkJet" class="tk-jet" x1="232" y1="106" x2="232" y2="150"></line>
+
+                <!-- alarms, setpoint marker, level readout -->
+                <line x1="202" y1="65" x2="398" y2="65" class="tk-alarm"></line>
+                <line x1="202" y1="225" x2="398" y2="225" class="tk-alarm"></line>
+                <text x="394" y="61" text-anchor="end" class="tk-txt tk-txt-alarm">HH 90%</text>
+                <text x="394" y="238" text-anchor="end" class="tk-txt tk-txt-alarm">LL 10%</text>
+                <line id="tkSPLine" x1="202" y1="125" x2="398" y2="125" class="tk-sp"></line>
+                <text id="tkSPTxt" x="206" y="121" class="tk-txt tk-txt-strong">SP 60%</text>
+                <text id="tkLevelTxt" x="300" y="152" text-anchor="middle" class="tk-txt-big">0.0%</text>
+                <text x="300" y="170" text-anchor="middle" class="tk-txt tk-txt-sec">TANK T-101</text>
+
+                <!-- level scale -->
+                <line x1="400" y1="245" x2="410" y2="245" class="tk-tick"></line>
+                <line x1="400" y1="195" x2="410" y2="195" class="tk-tick"></line>
+                <line x1="400" y1="145" x2="410" y2="145" class="tk-tick"></line>
+                <line x1="400" y1="95"  x2="410" y2="95"  class="tk-tick"></line>
+                <line x1="400" y1="45"  x2="410" y2="45"  class="tk-tick"></line>
+                <text x="414" y="249" class="tk-txt">0</text>
+                <text x="414" y="199" class="tk-txt">25</text>
+                <text x="414" y="149" class="tk-txt">50</text>
+                <text x="414" y="99"  class="tk-txt">75</text>
+                <text x="414" y="49"  class="tk-txt">100</text>
+
+                <!-- discharge line + FV-102 -->
+                <path class="tk-pipe" d="M300,248 V282 H540"></path>
+                <path class="tk-flow" id="tkFlowOut" d="M300,248 V282 H540"></path>
+                <rect x="446" y="246" width="8" height="18" class="tk-valve-body"></rect>
+                <rect x="430" y="236" width="40" height="10" rx="5" class="tk-valve-body"></rect>
+                <path d="M436,268 L436,296 L450,282 Z" class="tk-valve-body"></path>
+                <path d="M464,268 L464,296 L450,282 Z" class="tk-valve-body"></path>
+                <g id="tkDrainLive" opacity="0.45">
+                  <path d="M436,268 L436,296 L450,282 Z" class="tk-valve-live"></path>
+                  <path d="M464,268 L464,296 L450,282 Z" class="tk-valve-live"></path>
+                </g>
+                <path d="M544,272 L568,282 L544,292 Z" class="tk-fill-rail"></path>
+                <text x="450" y="316" text-anchor="middle" class="tk-txt" id="tkQoutTxt">FV-102 · 0 m³/h to process</text>
+
+                <!-- ISA instrument loop: LT-101 -> LIC-101 -> FCV-101 -->
+                <line x1="188" y1="215" x2="200" y2="215" class="tk-tick"></line>
+                <path class="tk-sig" d="M124,215 H146"></path>
+                <path class="tk-sig" d="M102,193 V27 H126"></path>
+                <circle cx="168" cy="215" r="20" class="tk-valve-body"></circle>
+                <line x1="148" y1="215" x2="188" y2="215" class="tk-tick"></line>
+                <text x="168" y="212" text-anchor="middle" class="tk-txt">LT</text>
+                <text x="168" y="226" text-anchor="middle" class="tk-txt">101</text>
+                <circle cx="102" cy="215" r="20" class="tk-valve-body"></circle>
+                <line x1="82" y1="215" x2="122" y2="215" class="tk-tick"></line>
+                <text x="102" y="212" text-anchor="middle" class="tk-txt">LIC</text>
+                <text x="102" y="226" text-anchor="middle" class="tk-txt">101</text>
+                <text x="26" y="266" class="tk-txt tk-txt-strong" id="tkModeTxt">LIC-101 · AUTO</text>
+                <text x="26" y="282" class="tk-txt" id="tkErrTxt">DEV 0.0%</text>
+              </svg>
+            </div>
+
+            <div class="tank-status">
+              <span class="status-pill" id="tkModePill">AUTO</span>
+              <span class="status-pill muted" id="tkRunPill">RUNNING</span>
+              <span class="status-pill" id="tkAlarmPill">LEVEL NORMAL</span>
+            </div>
+
+            <div class="tank-readouts">
+              <div><span class="pid-readout-label">Level</span><strong id="tkLevelOut">0.0%</strong></div>
+              <div><span class="pid-readout-label">Volume</span><strong id="tkVolOut">0.0 m³</strong></div>
+              <div><span class="pid-readout-label">Inflow</span><strong id="tkQinOut">0</strong></div>
+              <div><span class="pid-readout-label">Discharge</span><strong id="tkQoutOut">0</strong></div>
+              <div><span class="pid-readout-label">Valve OP</span><strong id="tkOpOut">0.0%</strong></div>
+            </div>
+
+            <div class="tk-trend neu-in">
+              <svg viewBox="0 0 600 120" preserveAspectRatio="none" role="img" aria-label="Live trend of tank level, setpoint and valve output">
+                <line x1="0" y1="35" x2="600" y2="35" class="pid-gridline"></line>
+                <line x1="0" y1="60" x2="600" y2="60" class="pid-gridline"></line>
+                <line x1="0" y1="85" x2="600" y2="85" class="pid-gridline"></line>
+                <line id="tkTrendSP" x1="0" y1="50" x2="600" y2="50" class="tk-trend-sp"></line>
+                <polyline id="tkTrendOP" class="tk-trend-op" points=""></polyline>
+                <polyline id="tkTrendPV" class="tk-trend-pv" points=""></polyline>
+              </svg>
+            </div>
+            <div class="tk-legend">
+              <span><i style="background:var(--accent);"></i>Level PV</span>
+              <span><i style="background:var(--text-muted);"></i>Setpoint</span>
+              <span><i style="background:var(--amber);"></i>Valve output</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- DOWNLOADS ---------- -->
+    <section id="downloads" aria-label="Downloadable documents">
+      <div class="section-head">
+        <div class="kicker">Documents</div>
+        <h2>Downloads</h2>
+      </div>
+      <div class="downloads-grid">
+        <div class="dl-card neu-flat">
+          <div class="dl-top">
+            <div class="dl-icon neu-in" style="color:var(--danger);">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2h9l5 5v15H6z"/><path d="M15 2v5h5"/><path d="M8.5 13.5h1.2c.7 0 1.3.6 1.3 1.3s-.6 1.3-1.3 1.3H8.5v-2.6Zm0 2.6V18M12.5 18v-4.5h1c1 0 1.7.9 1.7 2.25S14.5 18 13.5 18h-1Zm4.5-4.5V18M17 15.7h1.6"/></svg>
+            </div>
+            <div>
+              <div class="dl-title">Master CV</div>
+              <div class="dl-sub">PDF · 240 KB</div>
+            </div>
+          </div>
+          <!-- PLACEHOLDER: Link this button to your actual CV file, e.g. href="ibrahim-khalil-cv.pdf" -->
+          <a href="#" class="dl-btn neu-flat" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0-4-4m4 4 4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg><span>Download</span></a>
+        </div>
+
+        <div class="dl-card neu-flat">
+          <div class="dl-top">
+            <div class="dl-icon neu-in" style="color:var(--blue);">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2h9l5 5v15H6z"/><path d="M15 2v5h5"/><path d="M8 13h8M8 16h8M8 19h5"/></svg>
+            </div>
+            <div>
+              <div class="dl-title">ERL Custody Transfer Topology</div>
+              <div class="dl-sub">PDF / AutoCAD · 1.1 MB</div>
+            </div>
+          </div>
+          <!-- PLACEHOLDER: Link this button to your actual topology drawing, e.g. href="erl-topology.pdf" -->
+          <a href="#" class="dl-btn neu-flat" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0-4-4m4 4 4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg><span>Download</span></a>
+        </div>
+
+        <div class="dl-card neu-flat">
+          <div class="dl-top">
+            <div class="dl-icon neu-in" style="color:var(--accent-strong);">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2h9l5 5v15H6z"/><path d="M15 2v5h5"/><path d="M8 12h8M8 15h8M8 18h8"/></svg>
+            </div>
+            <div>
+              <div class="dl-title">Sample Shift Report Template</div>
+              <div class="dl-sub">Excel .xlsx · 58 KB</div>
+            </div>
+          </div>
+          <!-- PLACEHOLDER: Link this button to your actual Excel template, e.g. href="shift-report-template.xlsx" -->
+          <a href="#" class="dl-btn neu-flat" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0-4-4m4 4 4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg><span>Download</span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- CONTACT ---------- -->
+    <section id="contact" aria-label="Contact">
+      <div class="contact-card neu-out">
+        <div>
+          <h2>Have a control system to commission?</h2>
+          <p>Reach out about SCADA, BMS or PLC integration work — I usually reply within a day.</p>
+        </div>
+        <div class="contact-methods">
+          <a href="mailto:tech.ibrahimkhalil@gmail.com" class="neu-flat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5h18v14H3z"/><path d="m3 6 9 7 9-7"/></svg>tech.ibrahimkhalil@gmail.com</a>
+          <a href="tel:+8801741412002" class="neu-flat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.4 15.7v3.1a1.8 1.8 0 0 1-2 1.8 17.6 17.6 0 0 1-7.7-2.7 17.4 17.4 0 0 1-5.3-5.3A17.6 17.6 0 0 1 2.7 4.9 1.8 1.8 0 0 1 4.5 2.9h3.1a1.8 1.8 0 0 1 1.8 1.5c.1.9.3 1.8.6 2.7a1.8 1.8 0 0 1-.4 1.9l-1.3 1.3a14 14 0 0 0 5.3 5.3l1.3-1.3a1.8 1.8 0 0 1 1.9-.4c.9.3 1.8.5 2.7.6a1.8 1.8 0 0 1 1.5 1.8Z"/></svg>+880 1741 412002</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- SOCIAL / CONNECT ---------- -->
+    <section id="social" aria-label="Social media channels">
+      <div class="section-head">
+        <div class="kicker">Connect</div>
+        <h2>Follow the work</h2>
+        <p class="lede">Automation tutorials, commissioning notes and project teardowns — and the quickest ways to reach me.</p>
+      </div>
+      <div class="social-grid">
+        <a class="social-card neu-flat" href="https://www.youtube.com/@AutomationInsiderX?sub_confirmation=1" target="_blank" rel="noopener noreferrer" style="--brand:#ff0033;" aria-label="YouTube — @AutomationInsiderX">
+          <span class="social-ico neu-in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M22.5 6.4a2.8 2.8 0 0 0-1.9-2C18.9 4 12 4 12 4s-6.9 0-8.6.4a2.8 2.8 0 0 0-2 2A29 29 0 0 0 1 11.8a29 29 0 0 0 .5 5.3 2.8 2.8 0 0 0 1.9 2c1.7.4 8.6.4 8.6.4s6.9 0 8.6-.4a2.8 2.8 0 0 0 1.9-2 29 29 0 0 0 .5-5.3 29 29 0 0 0-.5-5.4Z"/><path d="m9.8 15 5.7-3.2-5.7-3.3V15Z" fill="currentColor" stroke="none"/></svg></span>
+          <span class="social-meta"><strong>YouTube</strong><span>@AutomationInsiderX</span></span>
+          <svg class="social-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
+        </a>
+        <a class="social-card neu-flat" href="https://www.linkedin.com/in/ibrahim-khalil-tech/" target="_blank" rel="noopener noreferrer" style="--brand:#0a66c2;" aria-label="LinkedIn — in/ibrahim-khalil-tech">
+          <span class="social-ico neu-in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-13h4v1.5A6 6 0 0 1 16 8Z"/><rect x="2" y="9" width="4" height="12" rx="1"/><circle cx="4" cy="4" r="2"/></svg></span>
+          <span class="social-meta"><strong>LinkedIn</strong><span>in/ibrahim-khalil-tech</span></span>
+          <svg class="social-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
+        </a>
+        <a class="social-card neu-flat" href="https://github.com/tech-ibrahimkhalil" target="_blank" rel="noopener noreferrer" style="--brand:var(--text-primary);" aria-label="GitHub — tech-ibrahimkhalil">
+          <span class="social-ico neu-in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.9a3.4 3.4 0 0 0-1-2.6c3.1-.3 6.4-1.5 6.4-7A5.4 5.4 0 0 0 20 4.8 5 5 0 0 0 19.9 1S18.7.7 16 2.5a13.4 13.4 0 0 0-7 0C6.3.7 5.1 1 5.1 1A5 5 0 0 0 5 4.8a5.4 5.4 0 0 0-1.5 3.7c0 5.5 3.3 6.7 6.4 7A3.4 3.4 0 0 0 9 18.1V22"/></svg></span>
+          <span class="social-meta"><strong>GitHub</strong><span>tech-ibrahimkhalil</span></span>
+          <svg class="social-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
+        </a>
+        <a class="social-card neu-flat" href="mailto:tech.ibrahimkhalil@gmail.com" style="--brand:#ea4335;" aria-label="Gmail — tech.ibrahimkhalil@gmail.com" title="tech.ibrahimkhalil@gmail.com">
+          <span class="social-ico neu-in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="2.6"/><path d="m3.2 7.2 8.8 6.3 8.8-6.3"/><path d="M7.2 18.4V9.6M16.8 18.4V9.6"/></svg></span>
+          <span class="social-meta"><strong>Gmail</strong><span>tech.ibrahimkhalil</span></span>
+          <svg class="social-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
+        </a>
+        <a class="social-card neu-flat" href="https://wa.me/8801741412002" target="_blank" rel="noopener noreferrer" style="--brand:#25d366;" aria-label="WhatsApp — +880 1741 412002">
+          <span class="social-ico neu-in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20.9 11.6a8.6 8.6 0 0 1-12.6 7.6L3.4 20.6l1.5-4.7a8.6 8.6 0 1 1 16-4.3Z"/><path d="M8.6 8.2c.2-.4.5-.5.8-.5h.7c.2 0 .4.1.5.4l.7 1.6c.1.3 0 .5-.1.7l-.5.6c-.1.2-.2.4 0 .6a7.4 7.4 0 0 0 2.9 2.5c.3.1.5.1.6-.1l.6-.7c.2-.2.4-.3.7-.2l1.6.8c.2.1.3.3.3.5a1.9 1.9 0 0 1-1.3 1.7c-.6.2-1.3.1-2.6-.4a9.6 9.6 0 0 1-4.6-4.5c-.6-1.2-.7-2-.6-2.6a2 2 0 0 1 .3-.4Z" stroke-width="1.4"/></svg></span>
+          <span class="social-meta"><strong>WhatsApp</strong><span>+880 1741 412002</span></span>
+          <svg class="social-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
+        </a>
+        <a class="social-card neu-flat" href="https://t.me/superengineer" target="_blank" rel="noopener noreferrer" style="--brand:#229ed9;" aria-label="Telegram — @superengineer">
+          <span class="social-ico neu-in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21.8 4.2 2.9 11.3c-.8.3-.8 1.4 0 1.7l4.7 1.6 1.8 5c.3.8 1.3.9 1.8.3l2.4-2.7 4.5 3.3c.7.5 1.6.1 1.8-.7l3-13.9c.2-1-.7-1.9-1.1-1.7Z"/><path d="m8 14.3 11-8.4-8 9.9"/></svg></span>
+          <span class="social-meta"><strong>Telegram</strong><span>@superengineer</span></span>
+          <svg class="social-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
+        </a>
+        <a class="social-card neu-flat" href="https://x.com/ibrahim_kha_lil" target="_blank" rel="noopener noreferrer" style="--brand:var(--text-primary);" aria-label="X — @ibrahim_kha_lil">
+          <span class="social-ico neu-in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m4 4 16 16M20 4 4 20" stroke-width="2.4"/></svg></span>
+          <span class="social-meta"><strong>X</strong><span>@ibrahim_kha_lil</span></span>
+          <svg class="social-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
+        </a>
+        <a class="social-card neu-flat" href="https://www.facebook.com/ibrahimkhalil.tech" target="_blank" rel="noopener noreferrer" style="--brand:#1877f2;" aria-label="Facebook — ibrahimkhalil.tech">
+          <span class="social-ico neu-in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3V2Z"/></svg></span>
+          <span class="social-meta"><strong>Facebook</strong><span>ibrahimkhalil.tech</span></span>
+          <svg class="social-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
+        </a>
+        <a class="social-card neu-flat" href="https://www.instagram.com/ibrahim_khalil_tech/" target="_blank" rel="noopener noreferrer" style="--brand:#e1306c;" aria-label="Instagram — @ibrahim_khalil_tech">
+          <span class="social-ico neu-in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.15" fill="currentColor" stroke="none"/></svg></span>
+          <span class="social-meta"><strong>Instagram</strong><span>@ibrahim_khalil_tech</span></span>
+          <svg class="social-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
+        </a>
+        <a class="social-card neu-flat" href="https://super-engineers.blogspot.com/" target="_blank" rel="noopener noreferrer" style="--brand:#ff8000;" aria-label="Blog — super-engineers.blogspot.com">
+          <span class="social-ico neu-in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="2.5" width="19" height="19" rx="6"/><path d="M9 8.2h2.6a2.4 2.4 0 0 1 0 4.8H9V8.2Zm0 4.8h4.4a2.4 2.4 0 0 1 0 4.8H9V13Z"/></svg></span>
+          <span class="social-meta"><strong>Blog</strong><span>super-engineers.blogspot.com</span></span>
+          <svg class="social-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
+        </a>
+      </div>
+      <p class="social-note">Building Tomorrow's Engineers Today.</p>
+    </section>
+
+  </main>
+</div>
+
+<footer>
+  <span class="footer-social"><a href="https://www.youtube.com/@AutomationInsiderX?sub_confirmation=1" target="_blank" rel="noopener noreferrer" style="--brand:#ff0033;" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M22.5 6.4a2.8 2.8 0 0 0-1.9-2C18.9 4 12 4 12 4s-6.9 0-8.6.4a2.8 2.8 0 0 0-2 2A29 29 0 0 0 1 11.8a29 29 0 0 0 .5 5.3 2.8 2.8 0 0 0 1.9 2c1.7.4 8.6.4 8.6.4s6.9 0 8.6-.4a2.8 2.8 0 0 0 1.9-2 29 29 0 0 0 .5-5.3 29 29 0 0 0-.5-5.4Z"/><path d="m9.8 15 5.7-3.2-5.7-3.3V15Z" fill="currentColor" stroke="none"/></svg></a><a href="https://www.linkedin.com/in/ibrahim-khalil-tech/" target="_blank" rel="noopener noreferrer" style="--brand:#0a66c2;" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-13h4v1.5A6 6 0 0 1 16 8Z"/><rect x="2" y="9" width="4" height="12" rx="1"/><circle cx="4" cy="4" r="2"/></svg></a><a href="https://github.com/tech-ibrahimkhalil" target="_blank" rel="noopener noreferrer" style="--brand:var(--text-primary);" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.9a3.4 3.4 0 0 0-1-2.6c3.1-.3 6.4-1.5 6.4-7A5.4 5.4 0 0 0 20 4.8 5 5 0 0 0 19.9 1S18.7.7 16 2.5a13.4 13.4 0 0 0-7 0C6.3.7 5.1 1 5.1 1A5 5 0 0 0 5 4.8a5.4 5.4 0 0 0-1.5 3.7c0 5.5 3.3 6.7 6.4 7A3.4 3.4 0 0 0 9 18.1V22"/></svg></a><a href="mailto:tech.ibrahimkhalil@gmail.com" style="--brand:#ea4335;" aria-label="Gmail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="2.6"/><path d="m3.2 7.2 8.8 6.3 8.8-6.3"/><path d="M7.2 18.4V9.6M16.8 18.4V9.6"/></svg></a><a href="https://wa.me/8801741412002" target="_blank" rel="noopener noreferrer" style="--brand:#25d366;" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20.9 11.6a8.6 8.6 0 0 1-12.6 7.6L3.4 20.6l1.5-4.7a8.6 8.6 0 1 1 16-4.3Z"/><path d="M8.6 8.2c.2-.4.5-.5.8-.5h.7c.2 0 .4.1.5.4l.7 1.6c.1.3 0 .5-.1.7l-.5.6c-.1.2-.2.4 0 .6a7.4 7.4 0 0 0 2.9 2.5c.3.1.5.1.6-.1l.6-.7c.2-.2.4-.3.7-.2l1.6.8c.2.1.3.3.3.5a1.9 1.9 0 0 1-1.3 1.7c-.6.2-1.3.1-2.6-.4a9.6 9.6 0 0 1-4.6-4.5c-.6-1.2-.7-2-.6-2.6a2 2 0 0 1 .3-.4Z" stroke-width="1.4"/></svg></a><a href="https://t.me/superengineer" target="_blank" rel="noopener noreferrer" style="--brand:#229ed9;" aria-label="Telegram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21.8 4.2 2.9 11.3c-.8.3-.8 1.4 0 1.7l4.7 1.6 1.8 5c.3.8 1.3.9 1.8.3l2.4-2.7 4.5 3.3c.7.5 1.6.1 1.8-.7l3-13.9c.2-1-.7-1.9-1.1-1.7Z"/><path d="m8 14.3 11-8.4-8 9.9"/></svg></a><a href="https://x.com/ibrahim_kha_lil" target="_blank" rel="noopener noreferrer" style="--brand:var(--text-primary);" aria-label="X"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m4 4 16 16M20 4 4 20" stroke-width="2.4"/></svg></a><a href="https://www.facebook.com/ibrahimkhalil.tech" target="_blank" rel="noopener noreferrer" style="--brand:#1877f2;" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3V2Z"/></svg></a><a href="https://www.instagram.com/ibrahim_khalil_tech/" target="_blank" rel="noopener noreferrer" style="--brand:#e1306c;" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.15" fill="currentColor" stroke="none"/></svg></a><a href="https://super-engineers.blogspot.com/" target="_blank" rel="noopener noreferrer" style="--brand:#ff8000;" aria-label="Blog"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="2.5" width="19" height="19" rx="6"/><path d="M9 8.2h2.6a2.4 2.4 0 0 1 0 4.8H9V8.2Zm0 4.8h4.4a2.4 2.4 0 0 1 0 4.8H9V13Z"/></svg></a></span>
+  <span>© <span id="year"></span> MD. Ibrahim Khalil. <span>All rights reserved.</span></span>
+</footer>
+
+<!-- ============================================================
+     PROJECT DETAIL MODAL
+     ============================================================ -->
+<div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div>
+        <h3 id="modalTitle"></h3>
+        <div class="org" id="modalOrg"></div>
+      </div>
+      <button class="modal-close neu-flat" id="modalClose" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <!-- PLACEHOLDER: Insert project screenshot/schematic here (e.g. <img src="project-schematic.png" alt="Project schematic">) -->
+      <div class="modal-thumb neu-in">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="m3 15 5-5 4 4 5-6 4 5"/></svg>
+      </div>
+      <div class="mod-block">
+        <h4>Objective</h4>
+        <p id="modalObjective"></p>
+      </div>
+      <div class="mod-block">
+        <h4>Architecture</h4>
+        <p id="modalArchitecture"></p>
+      </div>
+      <div class="mod-block">
+        <h4>Hardware & Protocols</h4>
+        <ul id="modalHardware"></ul>
+      </div>
+      <div class="mod-block">
+        <h4>Control Logic</h4>
+        <p id="modalLogic"></p>
+      </div>
+      <div class="mod-block">
+        <h4>System Results</h4>
+        <p id="modalResults"></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ============================================================
+     THEME SWITCHER
+     ============================================================ */
+  var root = document.documentElement;
+  var themeToggle = document.getElementById('themeToggle');
+  var savedTheme = localStorage.getItem('ik-theme');
+  if(savedTheme){ root.setAttribute('data-theme', savedTheme); }
+  else if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches){
+    root.setAttribute('data-theme','dark');
+  }
+  themeToggle.addEventListener('click', function(){
+    var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    localStorage.setItem('ik-theme', next);
+  });
+
+  /* ============================================================
+     SIDEBAR (auto-hidden drawer, toggled by the edge tab)
+     ============================================================ */
+  var sidebarTab = document.getElementById('sidebarTab');
+  var sidebarOverlay = document.getElementById('sidebarOverlay');
+  var sidebar = document.getElementById('sidebar');
+
+  function setSidebarOpen(open){
+    sidebar.classList.toggle('open', open);
+    sidebarOverlay.classList.toggle('open', open);
+    sidebarTab.classList.toggle('open', open);
+    sidebarTab.setAttribute('aria-expanded', open ? 'true' : 'false');
+    sidebarTab.setAttribute('aria-label', open ? 'Close sidebar' : 'Open sidebar');
+  }
+  sidebarTab.addEventListener('click', function(){
+    setSidebarOpen(!sidebar.classList.contains('open'));
+  });
+  sidebarOverlay.addEventListener('click', function(){ setSidebarOpen(false); });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape') setSidebarOpen(false);
+  });
+  document.querySelectorAll('.sidenav a').forEach(function(link){
+    link.addEventListener('click', function(){
+      setSidebarOpen(false);
+      document.querySelectorAll('.sidenav a').forEach(function(a){a.classList.remove('active');});
+      link.classList.add('active');
+    });
+  });
+
+  /* scroll-spy for active nav link */
+  var sections = ['about','competencies','projects','codelab','calculator','downloads','contact','social'];
+  var navLinks = document.querySelectorAll('.sidenav a');
+  window.addEventListener('scroll', function(){
+    var scrollPos = window.scrollY + 140;
+    var current = sections[0];
+    sections.forEach(function(id){
+      var el = document.getElementById(id);
+      if(el && el.offsetTop <= scrollPos){ current = id; }
+    });
+    navLinks.forEach(function(a){
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  }, {passive:true});
+
+  /* ============================================================
+     PROJECT DATA
+     ============================================================ */
+  var projects = [
+    {
+      id:'erl',
+      category:'scada',
+      tag:{en:'Siemens & SCADA', bn:'সিমেন্স ও স্কাডা'},
+      name:{en:'HSD Custody Transfer System Automation', bn:'এইচএসডি কাস্টডি ট্রান্সফার সিস্টেম অটোমেশন'},
+      org:'Eastern Refinery Limited (ERL)',
+      summary:{en:'Redundant Siemens SCADA architecture for fiscal-accuracy diesel custody transfer.', bn:'ফিসকাল-অ্যাকুরেসি ডিজেল কাস্টডি ট্রান্সফারের জন্য রিডানডেন্ট সিমেন্স স্কাডা আর্কিটেকচার।'},
+      specs:['S7-1500/1200 Redundant','WinCC SCADA','~250 I/O','ET 200M','PROFINET'],
+      objective:{en:'Automate high-accuracy custody transfer of HSD (High Speed Diesel) between refinery storage and dispatch, meeting fiscal metering standards with full redundancy.', bn:'রিফাইনারি স্টোরেজ ও ডিসপ্যাচের মধ্যে HSD-এর হাই-অ্যাকুরেসি কাস্টডি ট্রান্সফার অটোমেট করা, পূর্ণ রিডানডেন্সি সহ ফিসকাল মিটারিং স্ট্যান্ডার্ড মেনে।'},
+      architecture:{en:'Redundant Siemens S7-1500 controllers with hot-standby failover, communicating over PROFINET to distributed ET 200M I/O racks, supervised by a redundant WinCC SCADA server pair with synchronized historian tags.', bn:'হট-স্ট্যান্ডবাই ফেইলওভার সহ রিডানডেন্ট সিমেন্স S7-1500 কন্ট্রোলার, PROFINET-এর মাধ্যমে ডিস্ট্রিবিউটেড ET 200M I/O র‍্যাকের সাথে যোগাযোগ করে, সিঙ্ক্রোনাইজড হিস্টোরিয়ান ট্যাগ সহ রিডানডেন্ট WinCC স্কাডা সার্ভার জোড়া দ্বারা তত্ত্বাবধান করা হয়।'},
+      hardware:{en:['Siemens S7-1500 & S7-1200 CPUs (redundant pair)','ET 200M distributed I/O stations','PROFINET ring network','Mass-flow custody meters, ~250 I/O points'], bn:['সিমেন্স S7-1500 ও S7-1200 CPU (রিডানডেন্ট জোড়া)','ET 200M ডিস্ট্রিবিউটেড I/O স্টেশন','PROFINET রিং নেটওয়ার্ক','ম্যাস-ফ্লো কাস্টডি মিটার, ~২৫০ I/O পয়েন্ট']},
+      logic:{en:'Interlocked batch-transfer sequencing with automatic changeover on primary CPU fault, density/temperature-compensated flow totalization, and alarm-priority filtering for operator clarity.', bn:'প্রাইমারি CPU ফল্টে স্বয়ংক্রিয় চেঞ্জওভার সহ ইন্টারলকড ব্যাচ-ট্রান্সফার সিকোয়েন্সিং, ডেনসিটি/তাপমাত্রা-ক্ষতিপূরণকৃত ফ্লো টোটালাইজেশন, এবং অপারেটর স্বচ্ছতার জন্য অ্যালার্ম-প্রায়োরিটি ফিল্টারিং।'},
+      results:{en:'Zero unplanned SCADA downtime since commissioning, with fiscal metering variance held within contractual tolerance across all shifts.', bn:'কমিশনিং-এর পর থেকে শূন্য অপরিকল্পিত স্কাডা ডাউনটাইম, সকল শিফটে চুক্তিগত সহনশীলতার মধ্যে ফিসকাল মিটারিং ভ্যারিয়েন্স বজায় রাখা হয়েছে।'}
+    },
+    {
+      id:'lift',
+      category:'motion',
+      tag:{en:'Motion & Robotics', bn:'মোশন ও রোবোটিক্স'},
+      name:{en:'5-Floor Industrial Cargo Lift Automation', bn:'৫-তলা ইন্ডাস্ট্রিয়াল কার্গো লিফট অটোমেশন'},
+      org:'Liz Fashion',
+      summary:{en:'Mitsubishi PLC-controlled multi-floor cargo lift with diagnostic HMI and safety interlocks.', bn:'ডায়াগনস্টিক HMI ও সেফটি ইন্টারলক সহ মিতসুবিশি PLC-নিয়ন্ত্রিত মাল্টি-ফ্লোর কার্গো লিফট।'},
+      specs:['Mitsubishi PLC','5-Floor Sequencing','HMI Diagnostics','Door Interlocks'],
+      objective:{en:'Replace manual relay-based lift control with a PLC-driven system offering reliable multi-floor call sequencing and clear fault diagnostics for factory staff.', bn:'ফ্যাক্টরি স্টাফের জন্য নির্ভরযোগ্য মাল্টি-ফ্লোর কল সিকোয়েন্সিং ও স্পষ্ট ফল্ট ডায়াগনস্টিক্স প্রদানকারী PLC-চালিত সিস্টেম দিয়ে ম্যানুয়াল রিলে-ভিত্তিক লিফট কন্ট্রোল প্রতিস্থাপন করা।'},
+      architecture:{en:'A single Mitsubishi PLC manages call requests, floor-position sensing and motor drive commands, with a local HMI panel for live status and fault history at each floor landing.', bn:'একটি একক মিতসুবিশি PLC কল রিকোয়েস্ট, ফ্লোর-পজিশন সেন্সিং ও মোটর ড্রাইভ কমান্ড পরিচালনা করে, প্রতিটি ফ্লোর ল্যান্ডিং-এ লাইভ স্ট্যাটাস ও ফল্ট হিস্ট্রির জন্য একটি লোকাল HMI প্যানেল সহ।'},
+      hardware:{en:['Mitsubishi FX/Q-series PLC','Floor-position limit switches','VFD motor drive','Local diagnostic HMI panel'], bn:['মিতসুবিশি FX/Q-সিরিজ PLC','ফ্লোর-পজিশন লিমিট সুইচ','VFD মোটর ড্রাইভ','লোকাল ডায়াগনস্টিক HMI প্যানেল']},
+      logic:{en:'Priority-based call queueing, door-interlock verification before motion, and overload/obstruction sensing that halts travel and raises a coded fault on the HMI.', bn:'প্রায়োরিটি-ভিত্তিক কল কিউয়িং, মোশনের আগে ডোর-ইন্টারলক যাচাই, এবং ওভারলোড/বাধা সেন্সিং যা চলাচল বন্ধ করে HMI-তে একটি কোডেড ফল্ট তোলে।'},
+      results:{en:'Cut lift-related production stoppages significantly and reduced technician diagnostic time from hours to minutes.', bn:'লিফট-সম্পর্কিত উৎপাদন বন্ধ উল্লেখযোগ্যভাবে কমেছে এবং টেকনিশিয়ানের ডায়াগনস্টিক সময় ঘণ্টা থেকে মিনিটে নেমে এসেছে।'}
+    },
+    {
+      id:'ethercat',
+      category:'motion',
+      tag:{en:'Motion & Robotics', bn:'মোশন ও রোবোটিক্স'},
+      name:{en:'WECON EtherCAT & Kinco CANopen Robotics System', bn:'WECON EtherCAT ও Kinco CANopen রোবোটিক্স সিস্টেম'},
+      org:'Multi-Axis Motion Lab',
+      summary:{en:'High-speed synchronized multi-axis motion across mixed EtherCAT and CANopen servo networks.', bn:'মিশ্র EtherCAT ও CANopen সার্ভো নেটওয়ার্ক জুড়ে হাই-স্পিড সিঙ্ক্রোনাইজড মাল্টি-অ্যাক্সিস মোশন।'},
+      specs:['WECON AC60','EtherCAT','Kinco + Elta Servo','CANopen'],
+      objective:{en:'Achieve tightly synchronized multi-axis motion by bridging a WECON EtherCAT motion controller with a Kinco and Elta servo network running CANopen.', bn:'একটি WECON EtherCAT মোশন কন্ট্রোলারকে CANopen চালিত Kinco ও Elta সার্ভো নেটওয়ার্কের সাথে সংযুক্ত করে টাইট সিঙ্ক্রোনাইজড মাল্টি-অ্যাক্সিস মোশন অর্জন করা।'},
+      architecture:{en:'WECON AC60 acts as EtherCAT master for real-time axis interpolation, gatewayed to a CANopen segment driving Kinco AK80 and Elta servo drives for auxiliary motion stations.', bn:'WECON AC60 রিয়েল-টাইম অ্যাক্সিস ইন্টারপোলেশনের জন্য EtherCAT মাস্টার হিসেবে কাজ করে, Kinco AK80 ও Elta সার্ভো ড্রাইভ চালিত CANopen সেগমেন্টের সাথে গেটওয়ে করা।'},
+      hardware:{en:['WECON AC60 EtherCAT motion controller','Kinco AK80 servo drives','Elta servo drives','CANopen-to-EtherCAT gateway'], bn:['WECON AC60 EtherCAT মোশন কন্ট্রোলার','Kinco AK80 সার্ভো ড্রাইভ','Elta সার্ভো ড্রাইভ','CANopen-টু-EtherCAT গেটওয়ে']},
+      logic:{en:'Electronic gearing and camming profiles synchronize auxiliary axes to a master encoder position, with network-loss failsafe that decelerates all axes to a controlled stop.', bn:'ইলেকট্রনিক গিয়ারিং ও ক্যামিং প্রোফাইল সহায়ক অক্ষগুলোকে একটি মাস্টার এনকোডার অবস্থানের সাথে সিঙ্ক্রোনাইজ করে, নেটওয়ার্ক-লস ফেইলসেফ সহ যা সমস্ত অক্ষকে নিয়ন্ত্রিত স্টপে ধীর করে।'},
+      results:{en:'Delivered sub-millisecond axis synchronization suitable for coordinated pick-and-place and material handling sequences.', bn:'সমন্বিত পিক-অ্যান্ড-প্লেস ও ম্যাটেরিয়াল হ্যান্ডলিং সিকোয়েন্সের উপযোগী সাব-মিলিসেকেন্ড অ্যাক্সিস সিঙ্ক্রোনাইজেশন প্রদান করা হয়েছে।'}
+    },
+    {
+      id:'bms',
+      category:'bms',
+      tag:{en:'BMS & HVAC', bn:'বিএমএস ও এইচভিএসি'},
+      name:{en:'Delta Controls BMS / HVAC Building Automation', bn:'ডেল্টা কন্ট্রোলস BMS / এইচভিএসি বিল্ডিং অটোমেশন'},
+      org:'Commercial Building BMS',
+      summary:{en:'GCL+ programmed BACnet building automation across AHU, FCU and VAV control loops.', bn:'AHU, FCU ও VAV কন্ট্রোল লুপ জুড়ে GCL+ প্রোগ্রামড BACnet বিল্ডিং অটোমেশন।'},
+      specs:['Delta Controls','GCL+','BACnet IP/MSTP','AHU/FCU/VAV DDC'],
+      objective:{en:'Deliver a unified BMS for HVAC comfort control and energy scheduling across air handling, fan coil and VAV zones using Delta Controls hardware.', bn:'ডেল্টা কন্ট্রোলস হার্ডওয়্যার ব্যবহার করে এয়ার হ্যান্ডলিং, ফ্যান কয়েল ও VAV জোন জুড়ে HVAC কমফোর্ট কন্ট্রোল ও এনার্জি শিডিউলিং-এর জন্য একটি সমন্বিত BMS প্রদান করা।'},
+      architecture:{en:'Delta Controls DDC panels on a BACnet MS/TP field bus, aggregated to a BACnet/IP backbone linking AHU, FCU and VAV controllers to a central graphical operator workstation.', bn:'BACnet MS/TP ফিল্ড বাসে ডেল্টা কন্ট্রোলস DDC প্যানেল, AHU, FCU ও VAV কন্ট্রোলারকে একটি কেন্দ্রীয় গ্রাফিক্যাল অপারেটর ওয়ার্কস্টেশনের সাথে যুক্তকারী BACnet/IP ব্যাকবোনে একত্রিত।'},
+      hardware:{en:['Delta Controls DDC controllers','BACnet MS/TP field bus','BACnet/IP backbone','AHU/FCU/VAV actuators & sensors'], bn:['ডেল্টা কন্ট্রোলস DDC কন্ট্রোলার','BACnet MS/TP ফিল্ড বাস','BACnet/IP ব্যাকবোন','AHU/FCU/VAV অ্যাকচুয়েটর ও সেন্সর']},
+      logic:{en:'GCL+ PID cascade loops for discharge-air and zone temperature, occupancy-based scheduling, and demand-based ventilation using CO2 trim.', bn:'ডিসচার্জ-এয়ার ও জোন তাপমাত্রার জন্য GCL+ PID ক্যাসকেড লুপ, অকুপেন্সি-ভিত্তিক শিডিউলিং, এবং CO2 ট্রিম ব্যবহার করে ডিমান্ড-ভিত্তিক ভেন্টিলেশন।'},
+      results:{en:'Reduced HVAC energy consumption while maintaining tighter zone-temperature stability across occupied hours.', bn:'অকুপাইড ঘণ্টাগুলোতে টাইট জোন-তাপমাত্রা স্থিতিশীলতা বজায় রেখে HVAC এনার্জি খরচ কমানো হয়েছে।'}
+    },
+    {
+      id:'pipeline',
+      category:'iiot',
+      tag:{en:'IIoT & Data', bn:'আইআইওটি ও ডেটা'},
+      name:{en:'Python + SQL Industrial Data & Reporting Pipeline', bn:'Python + SQL ইন্ডাস্ট্রিয়াল ডেটা ও রিপোর্টিং পাইপলাইন'},
+      org:'Plant Data Systems',
+      summary:{en:'Real-time PLC polling feeding a GUI dashboard and automated SQL Server shift reports.', bn:'রিয়েল-টাইম PLC পোলিং একটি GUI ড্যাশবোর্ড ও স্বয়ংক্রিয় SQL সার্ভার শিফট রিপোর্ট ফিড করে।'},
+      specs:['Python Polling','Real-Time GUI','MS SQL Server','Automated Reporting'],
+      objective:{en:'Replace manual shift-log data entry with an automated pipeline that polls PLC tags, visualizes them live, and generates structured production reports.', bn:'PLC ট্যাগ পোল করা, লাইভ ভিজ্যুয়ালাইজ করা এবং স্ট্রাকচার্ড প্রোডাকশন রিপোর্ট তৈরি করা একটি স্বয়ংক্রিয় পাইপলাইন দিয়ে ম্যানুয়াল শিফট-লগ ডেটা এন্ট্রি প্রতিস্থাপন করা।'},
+      architecture:{en:'A Python polling service reads PLC tags over snap7/pymodbus, writes time-stamped values into MS SQL Server, and drives a lightweight real-time GUI dashboard for operators.', bn:'একটি Python পোলিং সার্ভিস snap7/pymodbus-এর মাধ্যমে PLC ট্যাগ পড়ে, টাইম-স্ট্যাম্পড মান MS SQL সার্ভারে লেখে, এবং অপারেটরদের জন্য একটি হালকা রিয়েল-টাইম GUI ড্যাশবোর্ড চালায়।'},
+      hardware:{en:['Python polling service (snap7 / pymodbus)','MS SQL Server database','Real-time GUI dashboard','Scheduled stored-procedure reporting'], bn:['Python পোলিং সার্ভিস (snap7 / pymodbus)','MS SQL সার্ভার ডেটাবেস','রিয়েল-টাইম GUI ড্যাশবোর্ড','শিডিউলড স্টোরড-প্রসিডিউর রিপোর্টিং']},
+      logic:{en:'Scheduled stored procedures aggregate shift totals by tag, with automatic email/export of formatted reports at shift changeover.', bn:'শিডিউলড স্টোরড প্রসিডিউর ট্যাগ অনুযায়ী শিফট টোটাল একত্রিত করে, শিফট পরিবর্তনে ফরম্যাটেড রিপোর্টের স্বয়ংক্রিয় ইমেইল/এক্সপোর্ট সহ।'},
+      results:{en:'Eliminated manual log transcription errors and cut shift-report preparation time from roughly an hour to under a minute.', bn:'ম্যানুয়াল লগ ট্রান্সক্রিপশন ত্রুটি দূর করা হয়েছে এবং শিফট-রিপোর্ট প্রস্তুতির সময় প্রায় এক ঘণ্টা থেকে এক মিনিটেরও কম নামানো হয়েছে।'}
+    },
+    {
+      id:'gateway',
+      category:'scada',
+      tag:{en:'Siemens & SCADA', bn:'সিমেন্স ও স্কাডা'},
+      name:{en:'Multi-Vendor PLC Gateway Communication Lab', bn:'মাল্টি-ভেন্ডর PLC গেটওয়ে কমিউনিকেশন ল্যাব'},
+      org:'Cross-Vendor Integration Lab',
+      summary:{en:'Bridging Siemens, LS and legacy Modbus devices across a single PROFINET backbone.', bn:'একটি একক PROFINET ব্যাকবোন জুড়ে সিমেন্স, LS ও লিগেসি Modbus ডিভাইস সংযুক্ত করা।'},
+      specs:['S7-1200','LS Master-K120S','ODOT PNM02','Moxa NPort'],
+      objective:{en:'Enable a Siemens S7-1200 to exchange data with an LS Master-K120S PLC and legacy Modbus field devices without replacing existing hardware.', bn:'বিদ্যমান হার্ডওয়্যার প্রতিস্থাপন না করেই একটি সিমেন্স S7-1200 কে LS Master-K120S PLC ও লিগেসি Modbus ফিল্ড ডিভাইসের সাথে ডেটা বিনিময় করতে সক্ষম করা।'},
+      architecture:{en:'An ODOT PNM02 gateway converts Modbus RTU from the LS Master-K120S to PROFINET, while a Moxa NPort serial server brings legacy RS485 field devices onto the same Ethernet backbone as the S7-1200.', bn:'একটি ODOT PNM02 গেটওয়ে LS Master-K120S থেকে Modbus RTU কে PROFINET-এ রূপান্তর করে, যখন একটি Moxa NPort সিরিয়াল সার্ভার লিগেসি RS485 ফিল্ড ডিভাইসকে S7-1200-এর মতো একই ইথারনেট ব্যাকবোনে নিয়ে আসে।'},
+      hardware:{en:['Siemens S7-1200','LS Master-K120S PLC','ODOT PNM02 Modbus-to-PROFINET gateway','Moxa NPort serial server'], bn:['সিমেন্স S7-1200','LS Master-K120S PLC','ODOT PNM02 Modbus-টু-PROFINET গেটওয়ে','Moxa NPort সিরিয়াল সার্ভার']},
+      logic:{en:'Tag-mapping logic normalizes register addresses across vendors into a common data model consumed by the S7-1200 for unified alarming and control.', bn:'ট্যাগ-ম্যাপিং লজিক ভেন্ডর জুড়ে রেজিস্টার অ্যাড্রেসকে একটি সাধারণ ডেটা মডেলে নরমালাইজ করে যা একীভূত অ্যালার্মিং ও কন্ট্রোলের জন্য S7-1200 ব্যবহার করে।'},
+      results:{en:'Unified three previously siloed control islands into one monitored network without retiring any existing PLC.', bn:'কোনো বিদ্যমান PLC অবসরে না পাঠিয়েই পূর্বে বিচ্ছিন্ন তিনটি কন্ট্রোল আইল্যান্ডকে একটি পর্যবেক্ষিত নেটওয়ার্কে একীভূত করা হয়েছে।'}
+    }
+  ];
+
+  /* icon per category for thumb placeholder */
+  var catIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="m3 15 5-5 4 4 5-6 4 5"/></svg>';
+
+  function currentLang(){ return 'en'; }
+
+  function renderProjects(filter){
+    filter = filter || (document.querySelector('.filter-btn.active') || {}).dataset ? document.querySelector('.filter-btn.active').dataset.filter : 'all';
+    var lang = currentLang();
+    var grid = document.getElementById('projectsGrid');
+    grid.innerHTML = '';
+    projects.filter(function(p){ return filter === 'all' || p.category === filter; }).forEach(function(p){
+      var card = document.createElement('button');
+      card.className = 'project-card neu-flat';
+      card.setAttribute('data-id', p.id);
+      card.innerHTML =
+        '<div class="project-thumb neu-in">' +
+          '<span class="tag">' + p.tag[lang] + '</span>' + catIcon +
+        '</div>' +
+        '<div class="project-body">' +
+          '<h3>' + p.name[lang] + '</h3>' +
+          '<div class="org">' + p.org + '</div>' +
+          '<p class="summary">' + p.summary[lang] + '</p>' +
+          '<div class="specs">' + p.specs.map(function(s){return '<span>'+s+'</span>';}).join('') + '</div>' +
+        '</div>';
+      card.addEventListener('click', function(){ openModal(p.id); });
+      grid.appendChild(card);
+    });
+  }
+
+  document.querySelectorAll('.filter-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.filter-btn').forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      renderProjects(btn.dataset.filter);
+    });
+  });
+
+  /* ============================================================
+     PROJECT MODAL
+     ============================================================ */
+  var overlay = document.getElementById('modalOverlay');
+  var activeProjectId = null;
+
+  function openModal(id){
+    activeProjectId = id;
+    renderModalIfOpen();
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden','false');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal(){
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden','true');
+    document.body.style.overflow = '';
+    activeProjectId = null;
+  }
+  function renderModalIfOpen(){
+    if(!activeProjectId) return;
+    var p = projects.find(function(x){ return x.id === activeProjectId; });
+    if(!p) return;
+    var lang = currentLang();
+    document.getElementById('modalTitle').textContent = p.name[lang];
+    document.getElementById('modalOrg').textContent = p.org;
+    document.getElementById('modalObjective').textContent = p.objective[lang];
+    document.getElementById('modalArchitecture').textContent = p.architecture[lang];
+    document.getElementById('modalLogic').textContent = p.logic[lang];
+    document.getElementById('modalResults').textContent = p.results[lang];
+    var hwList = document.getElementById('modalHardware');
+    hwList.innerHTML = p.hardware[lang].map(function(h){ return '<li>'+h+'</li>'; }).join('');
+  }
+  document.getElementById('modalClose').addEventListener('click', closeModal);
+  overlay.addEventListener('click', function(e){ if(e.target === overlay) closeModal(); });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeModal(); });
+
+  /* ============================================================
+     CODE LAB TABS
+     ============================================================ */
+  document.querySelectorAll('.codelab-tab').forEach(function(tab){
+    tab.addEventListener('click', function(){
+      document.querySelectorAll('.codelab-tab').forEach(function(t){ t.classList.remove('active'); });
+      document.querySelectorAll('.codelab-panel').forEach(function(p){ p.classList.remove('active'); });
+      tab.classList.add('active');
+      document.querySelector('.codelab-panel[data-panel="'+tab.dataset.tab+'"]').classList.add('active');
+    });
+  });
+
+  /* ============================================================
+     ANIMATED METRIC COUNTERS
+     ============================================================ */
+  var counters = document.querySelectorAll('.counter');
+  var countersAnimated = false;
+  function animateCounters(){
+    if(countersAnimated) return;
+    countersAnimated = true;
+    counters.forEach(function(el){
+      var target = parseInt(el.dataset.target, 10);
+      var duration = 1400;
+      var startTime = null;
+      function step(ts){
+        if(!startTime) startTime = ts;
+        var progress = Math.min((ts - startTime) / duration, 1);
+        var eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = Math.round(eased * target);
+        if(progress < 1) requestAnimationFrame(step);
+        else el.textContent = target;
+      }
+      requestAnimationFrame(step);
+    });
+  }
+  var metricsSection = document.querySelector('.metrics-grid');
+  if('IntersectionObserver' in window && metricsSection){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){ animateCounters(); io.disconnect(); }
+      });
+    }, {threshold:.4});
+    io.observe(metricsSection);
+  } else {
+    animateCounters();
+  }
+
+  /* ============================================================
+     4-20 mA -> PV & PLC SCALING CALCULATOR
+     ============================================================ */
+  var mAInput = document.getElementById('mAInput');
+  var pvMin = document.getElementById('pvMin');
+  var pvMax = document.getElementById('pvMax');
+  var pvUnit = document.getElementById('pvUnit');
+  var rawMin = document.getElementById('rawMin');
+  var rawMax = document.getElementById('rawMax');
+  var pvOut = document.getElementById('pvOut');
+  var pvUnitOut = document.getElementById('pvUnitOut');
+  var rawOut = document.getElementById('rawOut');
+  var calcBar = document.getElementById('calcBar');
+
+  function clamp(v, lo, hi){ return Math.min(Math.max(v, lo), hi); }
+
+  function recalc(){
+    var mA = clamp(parseFloat(mAInput.value) || 0, 4, 20);
+    var pMin = parseFloat(pvMin.value) || 0;
+    var pMax = parseFloat(pvMax.value) || 0;
+    var rMin = parseFloat(rawMin.value) || 0;
+    var rMax = parseFloat(rawMax.value) || 0;
+    var percent = (mA - 4) / 16;
+    var pv = pMin + percent * (pMax - pMin);
+    var raw = rMin + percent * (rMax - rMin);
+    pvOut.textContent = pv.toFixed(2);
+    pvUnitOut.textContent = pvUnit.value || '';
+    rawOut.textContent = Math.round(raw);
+    calcBar.style.width = (percent * 100).toFixed(1) + '%';
+  }
+  [mAInput, pvMin, pvMax, pvUnit, rawMin, rawMax].forEach(function(el){
+    el.addEventListener('input', recalc);
+  });
+  recalc();
+
+  /* ============================================================
+     PID LOOP SIMULATOR
+     Discrete PID controller driving a first-order process,
+     redrawn as an SVG step-response chart on every input change.
+     ============================================================ */
+  var pidKp = document.getElementById('pidKp');
+  var pidKi = document.getElementById('pidKi');
+  var pidKd = document.getElementById('pidKd');
+  var pidTau = document.getElementById('pidTau');
+  var pidSP = document.getElementById('pidSP');
+  var pidReset = document.getElementById('pidReset');
+  var pidPVLine = document.getElementById('pidPVLine');
+  var pidSPLine = document.getElementById('pidSPLine');
+  var pidFinal = document.getElementById('pidFinal');
+  var pidOvershoot = document.getElementById('pidOvershoot');
+  var pidSettle = document.getElementById('pidSettle');
+
+  var PID_DEFAULTS = {kp:'2', ki:'0.4', kd:'0.2', tau:'8', sp:'60'};
+
+  function runPidSimulation(){
+    var Kp = parseFloat(pidKp.value) || 0;
+    var Ki = parseFloat(pidKi.value) || 0;
+    var Kd = parseFloat(pidKd.value) || 0;
+    var tau = Math.max(parseFloat(pidTau.value) || 1, 0.5);
+    var SP = clamp(parseFloat(pidSP.value) || 0, 0, 100);
+    var dt = 0.5, steps = 140;
+    var pv = 0, integral = 0, prevErr = 0;
+    var data = [];
+
+    for(var i = 0; i < steps; i++){
+      var err = SP - pv;
+      integral += err * dt;
+      var deriv = (err - prevErr) / dt;
+      var u = clamp(Kp * err + Ki * integral + Kd * deriv, 0, 100);
+      pv = pv + (dt / tau) * (u - pv);
+      prevErr = err;
+      data.push(pv);
+    }
+
+    /* --- draw chart --- */
+    var w = 600, h = 220, padTop = 12, padBottom = 18;
+    var maxVal = Math.max(100, SP * 1.35, Math.max.apply(null, data) * 1.08);
+    function scaleX(i){ return (i / (data.length - 1)) * w; }
+    function scaleY(v){ return h - padBottom - (v / maxVal) * (h - padBottom - padTop); }
+
+    var points = data.map(function(v, i){ return scaleX(i).toFixed(1) + ',' + scaleY(v).toFixed(1); }).join(' ');
+    pidPVLine.setAttribute('points', points);
+    var spY = scaleY(SP).toFixed(1);
+    pidSPLine.setAttribute('y1', spY);
+    pidSPLine.setAttribute('y2', spY);
+
+    /* --- readouts --- */
+    var finalPV = data[data.length - 1];
+    var peak = Math.max.apply(null, data);
+    var overshoot = SP > 0 ? Math.max(0, ((peak - SP) / SP) * 100) : 0;
+
+    var settleIndex = -1;
+    var band = Math.max(SP * 0.02, 0.5);
+    for(var j = 0; j < data.length; j++){
+      var withinBand = true;
+      for(var k = j; k < data.length; k++){
+        if(Math.abs(data[k] - SP) > band){ withinBand = false; break; }
+      }
+      if(withinBand){ settleIndex = j; break; }
+    }
+
+    pidFinal.textContent = finalPV.toFixed(1) + '%';
+    pidOvershoot.textContent = overshoot.toFixed(1) + '%';
+    pidSettle.textContent = settleIndex >= 0 ? (settleIndex * dt).toFixed(1) + ' s' : '> ' + (steps * dt) + ' s';
+  }
+
+  [pidKp, pidKi, pidKd, pidTau, pidSP].forEach(function(el){
+    el.addEventListener('input', runPidSimulation);
+  });
+  pidReset.addEventListener('click', function(){
+    pidKp.value = PID_DEFAULTS.kp;
+    pidKi.value = PID_DEFAULTS.ki;
+    pidKd.value = PID_DEFAULTS.kd;
+    pidTau.value = PID_DEFAULTS.tau;
+    pidSP.value = PID_DEFAULTS.sp;
+    runPidSimulation();
+  });
+  runPidSimulation();
+
+  /* ============================================================
+     TANK LEVEL LOOP
+     Inlet control valve feeding a tank against a gravity discharge.
+     AUTO  : PID with back-calculation anti-windup, derivative on PV.
+     MANUAL: operator strokes the valve; station tracks in auto so
+             the transfer is bumpless in both directions.
+     ============================================================ */
+  var tkSPIn    = document.getElementById('tkSP');
+  var tkCapIn   = document.getElementById('tkCap');
+  var tkQmaxIn  = document.getElementById('tkQmax');
+  var tkDmaxIn  = document.getElementById('tkDmax');
+  var tkKpIn    = document.getElementById('tkKp');
+  var tkKiIn    = document.getElementById('tkKi');
+  var tkKdIn    = document.getElementById('tkKd');
+  var tkMV      = document.getElementById('tkMV');
+  var tkMVVal   = document.getElementById('tkMVVal');
+  var tkManField= document.getElementById('tkManField');
+  var tkDrainIn = document.getElementById('tkDrain');
+  var tkDrainVal= document.getElementById('tkDrainVal');
+  var tkAutoBtn = document.getElementById('tkAutoBtn');
+  var tkManBtn  = document.getElementById('tkManBtn');
+  var tkRunBtn  = document.getElementById('tkRunBtn');
+  var tkResetBtn= document.getElementById('tkResetBtn');
+
+  var tkWaterG  = document.getElementById('tkWaterG');
+  var tkJet     = document.getElementById('tkJet');
+  var tkFlowIn  = document.getElementById('tkFlowIn');
+  var tkFlowOut = document.getElementById('tkFlowOut');
+  var tkValveLive = document.getElementById('tkValveLive');
+  var tkDrainLive = document.getElementById('tkDrainLive');
+  var tkValveTxt  = document.getElementById('tkValveTxt');
+  var tkFlowIn2   = document.getElementById('tkFlowIn2');
+  var tkModeTxt   = document.getElementById('tkModeTxt');
+  var tkErrTxt    = document.getElementById('tkErrTxt');
+  var tkQoutTxt   = document.getElementById('tkQoutTxt');
+  var tkSPLine    = document.getElementById('tkSPLine');
+  var tkSPTxt     = document.getElementById('tkSPTxt');
+  var tkLevelTxt  = document.getElementById('tkLevelTxt');
+  var tkModePill  = document.getElementById('tkModePill');
+  var tkRunPill   = document.getElementById('tkRunPill');
+  var tkAlarmPill = document.getElementById('tkAlarmPill');
+  var tkLevelOut  = document.getElementById('tkLevelOut');
+  var tkVolOut    = document.getElementById('tkVolOut');
+  var tkQinOut    = document.getElementById('tkQinOut');
+  var tkQoutOut   = document.getElementById('tkQoutOut');
+  var tkOpOut     = document.getElementById('tkOpOut');
+  var tkTrendPV   = document.getElementById('tkTrendPV');
+  var tkTrendOP   = document.getElementById('tkTrendOP');
+  var tkTrendSP   = document.getElementById('tkTrendSP');
+
+  var TK_DEFAULTS = {sp:'60', cap:'20', qmax:'240', dmax:'300', kp:'4.5', ki:'0.035', kd:'6', drain:'45'};
+  var TK = {mode:'auto', vol:4, valve:0, integral:0, prevPV:20, qin:0, qout:0, trend:[]};
+  var tkTimer = null, tkPausedByUser = false, tkVisible = true, tkDashIn = 0, tkDashOut = 0;
+  var TK_DT = 2.0;          /* simulated seconds per tick (50 ms) -> 40x real time */
+  var TK_TREND_MAX = 170;
+
+  function tkNum(el, fallback){
+    var v = parseFloat(el.value);
+    return isFinite(v) ? v : fallback;
+  }
+  function tkCap(){ return Math.max(tkNum(tkCapIn, 20), 0.5); }
+  function tkLevel(){ return clamp((TK.vol / tkCap()) * 100, 0, 100); }
+  /* tank inner span: 0% -> y245, 100% -> y45 */
+  function tkY(pct){ return 245 - 2 * clamp(pct, 0, 100); }
+
+  function tkSetMode(mode){
+    if(mode === TK.mode) return;
+    var SP = clamp(tkNum(tkSPIn, 60), 0, 100);
+    var err = SP - tkLevel();
+    if(mode === 'manual'){
+      tkMV.value = TK.valve.toFixed(0);            /* bumpless: pick up where PID left off */
+    }else{
+      var Kp = Math.max(tkNum(tkKpIn, 0), 0);
+      var Ki = Math.max(tkNum(tkKiIn, 0), 0);
+      TK.valve = clamp(tkNum(tkMV, 0), 0, 100);
+      TK.integral = Ki > 0 ? (TK.valve - Kp * err) / Ki : 0;   /* back-calculate the integral */
+    }
+    TK.mode = mode;
+    tkAutoBtn.classList.toggle('active', mode === 'auto');
+    tkManBtn.classList.toggle('active', mode === 'manual');
+    tkManField.classList.toggle('is-locked', mode === 'auto');
+    tkModePill.textContent = mode === 'auto' ? 'AUTO' : 'MANUAL';
+    tkModePill.className = 'status-pill' + (mode === 'auto' ? '' : ' warn');
+    tkDraw();
+  }
+
+  function tkStep(){
+    var cap  = tkCap();
+    var qmax = Math.max(tkNum(tkQmaxIn, 240), 0);
+    var dmax = Math.max(tkNum(tkDmaxIn, 300), 0);
+    var SP   = clamp(tkNum(tkSPIn, 60), 0, 100);
+    var level = tkLevel();
+
+    if(TK.mode === 'auto'){
+      var Kp = Math.max(tkNum(tkKpIn, 0), 0);
+      var Ki = Math.max(tkNum(tkKiIn, 0), 0);
+      var Kd = Math.max(tkNum(tkKdIn, 0), 0);
+      var err = SP - level;
+      var P = Kp * err;
+      var D = -Kd * ((level - TK.prevPV) / TK_DT);   /* derivative on measurement */
+      var I = TK.integral + err * TK_DT;
+      var u = P + Ki * I + D;
+      if(u > 100){ u = 100; I = Ki > 0 ? (100 - P - D) / Ki : 0; }
+      else if(u < 0){ u = 0; I = Ki > 0 ? (0 - P - D) / Ki : 0; }
+      if(Ki <= 0) I = 0;
+      TK.integral = I;
+      TK.valve = u;
+      tkMV.value = u.toFixed(0);                    /* station tracks the controller */
+    }else{
+      TK.valve = clamp(tkNum(tkMV, 0), 0, 100);
+    }
+    TK.prevPV = level;
+
+    var drain = clamp(tkNum(tkDrainIn, 45), 0, 100);
+    var qin  = (TK.valve / 100) * qmax;
+    var qout = (drain / 100) * dmax * Math.sqrt(clamp(level, 0, 100) / 100);
+
+    var vol = TK.vol + (qin - qout) * TK_DT / 3600;
+    if(vol > cap) vol = cap;                        /* overflow weir */
+    if(vol < 0){ qout = qin + TK.vol * 3600 / TK_DT; vol = 0; }
+    TK.vol = vol;
+    TK.qin = qin;
+    TK.qout = qout;
+
+    TK.trend.push([level, SP, TK.valve]);
+    if(TK.trend.length > TK_TREND_MAX) TK.trend.shift();
+  }
+
+  function tkPillState(level, running){
+    if(!running) return ['LOOP PAUSED', ' muted'];
+    if(level >= 99.5) return ['OVERFLOW · TANK FULL', ' alarm'];
+    if(level >= 90)   return ['HH · HIGH LEVEL', ' alarm'];
+    if(level <= 0.5)  return ['TANK EMPTY', ' alarm'];
+    if(level <= 10)   return ['LL · LOW LEVEL', ' warn'];
+    if(TK.mode === 'auto' && TK.valve >= 99.5) return ['OUTPUT SATURATED', ' warn'];
+    if(TK.mode === 'auto' && TK.valve <= 0.5)  return ['VALVE CLOSED', ' warn'];
+    return ['LEVEL NORMAL', ''];
+  }
+
+  function tkDraw(){
+    var cap = tkCap();
+    var level = tkLevel();
+    var SP = clamp(tkNum(tkSPIn, 60), 0, 100);
+    var surfaceY = tkY(level);
+
+    /* water body: front wave baseline sits at y=52 inside the group */
+    tkWaterG.setAttribute('transform', 'translate(0,' + (surfaceY - 52).toFixed(1) + ')');
+
+    /* setpoint marker */
+    var spY = tkY(SP);
+    tkSPLine.setAttribute('y1', spY);
+    tkSPLine.setAttribute('y2', spY);
+    tkSPTxt.setAttribute('y', (spY - 4).toFixed(1));
+    tkSPTxt.textContent = 'SP ' + SP.toFixed(0) + '%';
+
+    /* falling stream stops at the surface, hidden once submerged or shut */
+    var jetOff = TK.valve < 1 || surfaceY < 118;
+    tkJet.setAttribute('y2', Math.max(surfaceY - 2, 118).toFixed(1));
+    tkJet.classList.toggle('is-off', jetOff);
+    tkFlowIn.classList.toggle('is-off', TK.valve < 1);
+    tkFlowIn2.classList.toggle('is-off', TK.valve < 1);
+    tkFlowOut.classList.toggle('is-off', TK.qout < 0.5);
+
+    /* valve openings */
+    tkValveLive.setAttribute('opacity', Math.max(TK.valve / 100, 0.05).toFixed(2));
+    var drain = clamp(tkNum(tkDrainIn, 45), 0, 100);
+    tkDrainLive.setAttribute('opacity', Math.max(drain / 100, 0.05).toFixed(2));
+
+    /* pipe animation speed follows the flow */
+    var dIn = TK.valve < 1 ? 0 : Math.round((1.5 - 1.05 * TK.valve / 100) * 10) / 10;
+    if(dIn !== tkDashIn){ tkDashIn = dIn; tkFlowIn.style.animationDuration = dIn + 's'; tkFlowIn2.style.animationDuration = dIn + 's'; }
+    var dOutRatio = tkNum(tkDmaxIn, 300) > 0 ? clamp(TK.qout / Math.max(tkNum(tkDmaxIn, 300), 1), 0, 1) : 0;
+    var dOut = TK.qout < 0.5 ? 0 : Math.round((1.5 - 1.05 * dOutRatio) * 10) / 10;
+    if(dOut !== tkDashOut){ tkDashOut = dOut; tkFlowOut.style.animationDuration = dOut + 's'; }
+
+    /* text + readouts */
+    tkLevelTxt.textContent = level.toFixed(1) + '%';
+    tkValveTxt.textContent = TK.valve.toFixed(0) + '% · ' + TK.qin.toFixed(0) + ' m³/h';
+    tkModeTxt.textContent  = 'LIC-101 · ' + (TK.mode === 'auto' ? 'AUTO' : 'MANUAL');
+    tkErrTxt.textContent   = 'DEV ' + (level - SP >= 0 ? '+' : '') + (level - SP).toFixed(1) + '%';
+    tkQoutTxt.textContent  = 'FV-102 · ' + TK.qout.toFixed(0) + ' m³/h to process';
+    tkLevelOut.textContent = level.toFixed(1) + '%';
+    tkVolOut.textContent   = TK.vol.toFixed(1) + ' m³';
+    tkQinOut.textContent   = TK.qin.toFixed(0);
+    tkQoutOut.textContent  = TK.qout.toFixed(0);
+    tkOpOut.textContent    = TK.valve.toFixed(1) + '%';
+    tkMVVal.textContent    = clamp(tkNum(tkMV, 0), 0, 100).toFixed(0) + ' %';
+    tkDrainVal.textContent = drain.toFixed(0) + ' %';
+
+    var state = tkPillState(level, !!tkTimer);
+    tkAlarmPill.textContent = state[0];
+    tkAlarmPill.className = 'status-pill' + state[1];
+
+    /* live trend: 0% -> y110, 100% -> y10 */
+    tkTrendSP.setAttribute('y1', (110 - SP).toFixed(1));
+    tkTrendSP.setAttribute('y2', (110 - SP).toFixed(1));
+    if(TK.trend.length > 1){
+      var n = TK.trend.length, pv = '', op = '';
+      for(var i = 0; i < n; i++){
+        var x = ((i / (TK_TREND_MAX - 1)) * 600).toFixed(1);
+        pv += x + ',' + (110 - TK.trend[i][0]).toFixed(1) + ' ';
+        op += x + ',' + (110 - TK.trend[i][2]).toFixed(1) + ' ';
+      }
+      tkTrendPV.setAttribute('points', pv.trim());
+      tkTrendOP.setAttribute('points', op.trim());
+    }
+  }
+
+  function tkTick(){ tkStep(); tkDraw(); }
+
+  function tkStart(){
+    if(tkTimer) return;
+    tkTimer = setInterval(tkTick, 50);
+    tkRunBtn.textContent = 'Pause';
+    tkRunPill.textContent = 'RUNNING';
+    tkRunPill.className = 'status-pill muted';
+    tkDraw();
+  }
+  function tkStop(){
+    if(tkTimer){ clearInterval(tkTimer); tkTimer = null; }
+    tkRunBtn.textContent = 'Start';
+    tkRunPill.textContent = 'PAUSED';
+    tkRunPill.className = 'status-pill muted';
+    tkDraw();
+  }
+
+  tkAutoBtn.addEventListener('click', function(){ tkSetMode('auto'); });
+  tkManBtn.addEventListener('click', function(){ tkSetMode('manual'); });
+
+  tkMV.addEventListener('input', function(){
+    if(TK.mode === 'auto') tkSetMode('manual');   /* touching the station drops it to manual */
+    TK.valve = clamp(tkNum(tkMV, 0), 0, 100);
+    tkDraw();
+  });
+  [tkDrainIn, tkSPIn, tkCapIn, tkQmaxIn, tkDmaxIn, tkKpIn, tkKiIn, tkKdIn].forEach(function(el){
+    el.addEventListener('input', tkDraw);
+  });
+
+  tkRunBtn.addEventListener('click', function(){
+    if(tkTimer){ tkPausedByUser = true; tkStop(); }
+    else { tkPausedByUser = false; tkStart(); }
+  });
+
+  tkResetBtn.addEventListener('click', function(){
+    tkSPIn.value = TK_DEFAULTS.sp;
+    tkCapIn.value = TK_DEFAULTS.cap;
+    tkQmaxIn.value = TK_DEFAULTS.qmax;
+    tkDmaxIn.value = TK_DEFAULTS.dmax;
+    tkKpIn.value = TK_DEFAULTS.kp;
+    tkKiIn.value = TK_DEFAULTS.ki;
+    tkKdIn.value = TK_DEFAULTS.kd;
+    tkDrainIn.value = TK_DEFAULTS.drain;
+    tkMV.value = '0';
+    TK.vol = 0.2 * tkCap();
+    TK.valve = 0; TK.integral = 0; TK.prevPV = tkLevel(); TK.qin = 0; TK.qout = 0; TK.trend = [];
+    TK.mode = 'manual'; tkSetMode('auto');
+    tkPausedByUser = false;
+    tkStart();
+  });
+
+  /* pause when the tab or the card is out of view */
+  document.addEventListener('visibilitychange', function(){
+    if(document.hidden) tkStop();
+    else if(!tkPausedByUser && tkVisible) tkStart();
+  });
+  if('IntersectionObserver' in window){
+    var tkCard = document.querySelector('.tank-card');
+    if(tkCard){
+      new IntersectionObserver(function(entries){
+        tkVisible = entries[0].isIntersecting;
+        if(tkVisible && !tkPausedByUser && !document.hidden) tkStart();
+        else if(!tkVisible) tkStop();
+      }, {threshold:0.08}).observe(tkCard);
+    }
+  }
+
+  TK.vol = 0.2 * tkCap();
+  TK.prevPV = tkLevel();
+  tkDraw();
+  tkStart();
+
+  /* ============================================================
+     INIT
+     ============================================================ */
+  document.getElementById('year').textContent = new Date().getFullYear();
+  renderProjects('all');
+})();
+</script>
+</body>
+</html>
